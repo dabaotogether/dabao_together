@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "99947365597",
+    "firebase_url": "https://dabao-together.firebaseio.com",
+    "project_id": "dabao-together",
+    "storage_bucket": "dabao-together.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99947365597:android:f2c408b112a2f1d0514734",
+        "android_client_info": {
+          "package_name": "com.dabao_together"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99947365597-49ma9idc99inirjhkuhse66u4bhm81ln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbJftTkDg3ZGiPgAveEPGcaVLlI59C25w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99947365597-49ma9idc99inirjhkuhse66u4bhm81ln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
