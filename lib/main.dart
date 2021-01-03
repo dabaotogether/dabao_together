@@ -64,7 +64,8 @@ class MyApp extends StatelessWidget {
           //   create: (_) => MenuProvider(),
           //   child: WelcomeScreen(),
           // ),
-          initialRoute: WelcomeScreen.id,
+          // initialRoute: WelcomeScreen.id,
+          home: WelcomeScreen(),
           routes: {
             WelcomeScreen.id: (context) => WelcomeScreen(),
             LoginScreen.id: (context) => LoginScreen(),

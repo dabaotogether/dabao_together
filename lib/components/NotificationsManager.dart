@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/ChatScreen.dart';
+import 'package:dabao_together/Screens/Welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,9 +61,37 @@ class NotificationsManager {
       return;
     }, onResume: (Map<String, dynamic> message) {
       print('onResume: $message');
+      pushNotificationId = message['data']['idFrom'];
+      pushNotificationUsername = message['data']['userFrom'];
+      pushNotificationVendor = message['data']['vendor'];
+
+      Navigator.pushNamed(
+        context,
+        Chat.id,
+        arguments: <String, String>{
+          'requestorName': pushNotificationUsername,
+          'requestorId': pushNotificationId,
+          'vendor': pushNotificationVendor,
+        },
+      );
       return;
     }, onLaunch: (Map<String, dynamic> message) {
       print('onLaunch: $message');
+      if (_auth.currentUser != null) {
+        pushNotificationId = message['data']['idFrom'];
+        pushNotificationUsername = message['data']['userFrom'];
+        pushNotificationVendor = message['data']['vendor'];
+        Navigator.pushNamed(
+          context,
+          Chat.id,
+          arguments: <String, String>{
+            'requestorName': pushNotificationUsername,
+            'requestorId': pushNotificationId,
+            'vendor': pushNotificationVendor,
+          },
+        );
+      }
+
       return;
     });
 
@@ -118,19 +147,25 @@ class NotificationsManager {
   }
 
   Future selectNotification(String payload) async {
-    print('payload : $payload');
-    // print('payload : $payload');
     if (payload != null) {
-      debugPrint('notification payload: $payload');
-      Navigator.pushNamed(
-        context,
-        Chat.id,
-        arguments: <String, String>{
-          'requestorName': pushNotificationUsername,
-          'requestorId': pushNotificationId,
-          'vendor': pushNotificationVendor,
-        },
-      );
+      if (pushNotificationId != null) {
+        if (_auth.currentUser != null) {
+          Navigator.pushNamed(
+            context,
+            Chat.id,
+            arguments: <String, String>{
+              'requestorName': pushNotificationUsername,
+              'requestorId': pushNotificationId,
+              'vendor': pushNotificationVendor,
+            },
+          );
+        } else {
+          Navigator.pushNamed(
+            context,
+            WelcomeScreen.id,
+          );
+        }
+      }
     }
 
     // await Navigator.push(
@@ -141,13 +176,14 @@ class NotificationsManager {
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-      Platform.isAndroid ? 'com.dabao_together' : 'com.duytq.flutterchatdemo',
-      'Flutter chat demo',
-      'your channel description',
+      // Platform.isAndroid ? 'com.dabao_together' : 'com.duytq.flutterchatdemo',
+      'com.dabao_together',
+      'Dabao Together',
+      'Dabao Together',
       playSound: true,
       enableVibration: true,
-      importance: Importance.defaultImportance,
-      priority: Priority.defaultPriority,
+      importance: Importance.max,
+      priority: Priority.high,
     );
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(

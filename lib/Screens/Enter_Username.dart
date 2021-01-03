@@ -176,7 +176,8 @@ class _EnterUserNameState extends State<EnterUserName> {
         print('saving to firestore done!');
       });
       if (user.displayName != null)
-        Navigator.pushNamed(context, HomeNavScreen.id);
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeNavScreen.id, (_) => false);
     } catch (e) {
       print(e);
     }

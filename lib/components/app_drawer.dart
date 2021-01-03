@@ -240,8 +240,13 @@ class _AppDrawerState extends State<AppDrawer> {
                           borderSide:
                               BorderSide(color: Colors.white, width: 2.0),
                           onPressed: () async {
-                            await _auth.signOut().whenComplete(() =>
-                                Navigator.pushNamed(context, WelcomeScreen.id));
+                            await _auth.signOut().whenComplete(() {
+                              NotificationsManager newManager =
+                                  NotificationsManager(context);
+                              newManager.unregisterNotification();
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, WelcomeScreen.id, (_) => false);
+                            });
                           },
                           textColor: Colors.black87,
                           shape: RoundedRectangleBorder(
