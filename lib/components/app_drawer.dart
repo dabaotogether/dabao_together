@@ -1,5 +1,5 @@
 import 'package:dabao_together/Screens/Contact_Us.dart';
-import 'package:dabao_together/Screens/Main.dart';
+import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/Screens/My_Past_Requests.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
 import 'package:dabao_together/components/NotificationsManager.dart';
@@ -104,8 +104,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
-                          Navigator.pushNamed(
-                              context, MainActivityContainer.id);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, HomeNavScreen.id, (_) => false);
                         },
                       ),
                       ListTile(
@@ -123,7 +123,8 @@ class _AppDrawerState extends State<AppDrawer> {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
-                          Navigator.pushNamed(context, MyPastRequestsScreen.id);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, MyPastRequestsScreen.id, (_) => false);
                         },
                       ),
                       ListTile(
@@ -177,7 +178,9 @@ class _AppDrawerState extends State<AppDrawer> {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
-                          Navigator.pushNamed(context, ContactUsScreen.id);
+
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, ContactUsScreen.id, (_) => false);
                         },
                       ),
                       ListTile(

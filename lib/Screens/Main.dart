@@ -499,6 +499,10 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                 Image platform =
                                     Image.asset('images/others.png');
                                 String vendor = data['vendor'];
+                                String remarks = data['remarks'];
+                                if (remarks.length == 0) {
+                                  remarks = 'NA';
+                                }
                                 if (data['platform'] != null) {
                                   if (data['platform'] == 1) {
                                     platform =
@@ -521,49 +525,50 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                   }
                                 }
 
-                                String cuisineString = '';
-                                List<String> cuisineOptions = [
-                                  'Fast Food',
-                                  'Bubble Tea',
-                                  'Hawker',
-                                  'Western',
-                                  'Chinese',
-                                  'Muslim',
-                                  'Indian',
-                                  'Thai',
-                                  'Korean',
-                                  'Japanese',
-                                  'Others'
-                                ];
-                                List<dynamic> selectedCuisineOptions = [
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                ];
+                                //For next release
+                                // String cuisineString = '';
+                                // List<String> cuisineOptions = [
+                                //   'Fast Food',
+                                //   'Bubble Tea',
+                                //   'Hawker',
+                                //   'Western',
+                                //   'Chinese',
+                                //   'Muslim',
+                                //   'Indian',
+                                //   'Thai',
+                                //   'Korean',
+                                //   'Japanese',
+                                //   'Others'
+                                // ];
+                                // List<dynamic> selectedCuisineOptions = [
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                //   false,
+                                // ];
 
-                                if (data['type_of_food'] != null) {
-                                  selectedCuisineOptions = data['type_of_food'];
-                                  int index = 0;
-                                  for (bool type in selectedCuisineOptions) {
-                                    if (type) {
-                                      if (cuisineString.length == 0)
-                                        cuisineString = cuisineOptions[index];
-                                      else
-                                        cuisineString = cuisineString +
-                                            ',' +
-                                            cuisineOptions[index];
-                                    }
-                                    index++;
-                                  }
-                                }
+                                // if (data['type_of_food'] != null) {
+                                //   selectedCuisineOptions = data['type_of_food'];
+                                //   int index = 0;
+                                //   for (bool type in selectedCuisineOptions) {
+                                //     if (type) {
+                                //       if (cuisineString.length == 0)
+                                //         cuisineString = cuisineOptions[index];
+                                //       else
+                                //         cuisineString = cuisineString +
+                                //             ',' +
+                                //             cuisineOptions[index];
+                                //     }
+                                //     index++;
+                                //   }
+                                // }
                                 return Container(
                                   margin: EdgeInsets.all(5.0),
                                   decoration: BoxDecoration(
@@ -583,11 +588,11 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          'Type of cuisine: ' + cuisineString,
-                                          style:
-                                              TextStyle(color: Colors.black87),
-                                        ),
+                                        // Text(
+                                        //   'Type of cuisine: ' + cuisineString,
+                                        //   style:
+                                        //       TextStyle(color: Colors.black87),
+                                        // ),
                                         RichText(
                                           text: TextSpan(
                                             children: <TextSpan>[
@@ -636,6 +641,11 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                           'Distance: ' +
                                               dist.round().toString() +
                                               'm',
+                                          style:
+                                              TextStyle(color: Colors.black87),
+                                        ),
+                                        Text(
+                                          'Remarks: ' + remarks,
                                           style:
                                               TextStyle(color: Colors.black87),
                                         ),

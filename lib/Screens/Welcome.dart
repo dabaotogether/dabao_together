@@ -86,7 +86,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 if (_auth.currentUser != null) {
                   if (_auth.currentUser.displayName != null) {
                     // Navigator.pushNamed(context, MainActivityContainer.id);
-                    Navigator.pushNamed(context, HomeNavScreen.id);
+
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, HomeNavScreen.id, (_) => false);
                   } else {
                     Navigator.pushNamed(context, RegistrationScreen.id);
                   }

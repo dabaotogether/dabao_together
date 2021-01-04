@@ -33,6 +33,7 @@ class _EditRequestState extends State<EditRequest> {
   String geoy = '';
   bool toSplitFee = true;
   String platform = '';
+  String remarks = '';
   int deliveryFeeEditChoiceChipValue = 1;
   int platformEditChoiceChipValue = 1;
   TextEditingController datePickerEditController = TextEditingController();
@@ -40,6 +41,7 @@ class _EditRequestState extends State<EditRequest> {
   TextEditingController stallEditController = TextEditingController();
   TextEditingController postalCodeEditController = TextEditingController();
   TextEditingController addressEditController = TextEditingController();
+  TextEditingController remarksEditController = TextEditingController();
   List<bool> foodTypeList = new List<bool>();
   final _editRequestFormKey = GlobalKey<FormState>();
 
@@ -50,6 +52,7 @@ class _EditRequestState extends State<EditRequest> {
     stallEditController.dispose();
     postalCodeEditController.dispose();
     addressEditController.dispose();
+    remarksEditController.dispose();
     super.dispose();
   }
 
@@ -78,7 +81,7 @@ class _EditRequestState extends State<EditRequest> {
       stallEditController.text = requestDoc['vendor'];
       postalCodeEditController.text = requestDoc['postal_code'];
       addressEditController.text = requestDoc['address'];
-
+      remarksEditController.text = requestDoc['remarks'];
       selectedDate = requestDateTime;
       selectedTime = TimeOfDay.fromDateTime(requestDateTime);
       geox = requestDoc['geo_x'];
@@ -227,39 +230,40 @@ class _EditRequestState extends State<EditRequest> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Stack(children: [
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: 20, left: 10, right: 10, bottom: 10),
-                    margin: EdgeInsets.all(8.0),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.black54),
-                    ),
-                    child: Wrap(
-                      // height: 30,
-                      children: _buildFoodTypeChips(foodTypeList),
-                    ),
-                  ),
-                  Positioned(
-                      left: 40,
-                      // top: -10,
-                      child: Container(
-                        color: Colors.white,
-                        child: Text(
-                          'Type of Food',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: "Poppins",
-                            // decoration: TextDecoration.underline,
-                            backgroundColor: Colors.white,
-                          ),
-                        ),
-                      )),
-                ]),
+                //For next release
+                // SizedBox(height: 10),
+                // Stack(children: [
+                //   Container(
+                //     padding: EdgeInsets.only(
+                //         top: 20, left: 10, right: 10, bottom: 10),
+                //     margin: EdgeInsets.all(8.0),
+                //     width: double.infinity,
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(30),
+                //       border: Border.all(color: Colors.black54),
+                //     ),
+                //     child: Wrap(
+                //       // height: 30,
+                //       children: _buildFoodTypeChips(foodTypeList),
+                //     ),
+                //   ),
+                //   Positioned(
+                //       left: 40,
+                //       // top: -10,
+                //       child: Container(
+                //         color: Colors.white,
+                //         child: Text(
+                //           'Type of Food',
+                //           style: TextStyle(
+                //             color: Colors.black,
+                //             fontSize: 12,
+                //             fontFamily: "Poppins",
+                //             // decoration: TextDecoration.underline,
+                //             backgroundColor: Colors.white,
+                //           ),
+                //         ),
+                //       )),
+                // ]),
                 Container(
                   padding: EdgeInsets.only(top: 10, right: 10, left: 10),
                   child: TextFormField(
@@ -580,6 +584,35 @@ class _EditRequestState extends State<EditRequest> {
                         ),
                       )),
                 ]),
+                Container(
+                  padding: EdgeInsets.only(top: 10, right: 10, left: 10),
+                  child: TextFormField(
+                    controller: remarksEditController,
+                    maxLines: 3,
+                    maxLength: 100,
+                    maxLengthEnforced: true,
+                    decoration: new InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.info_outline_rounded,
+                        size: 40,
+                      ),
+                      labelText: "Remarks",
+                      hintText: "e.g. more info: type of food, contact number",
+
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
+                      ),
+                      //fillColor: Colors.green
+                    ),
+                    onSaved: (value) {
+                      remarks = value;
+                    },
+                    style: new TextStyle(
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -621,6 +654,7 @@ class _EditRequestState extends State<EditRequest> {
                               "platform": platformEditChoiceChipValue,
                               "created_time": FieldValue.serverTimestamp(),
                               "expired": 0,
+                              "remarks": remarks,
                             }).then((_) {
                               Flushbar(
                                 title: "Hey " + _auth.currentUser.displayName,

@@ -28,6 +28,7 @@ class _AddRequestState extends State<AddRequest> {
   String shopName = '';
   String postalCode = '';
   String address = '';
+  String remarks = '';
   String geox = '';
   String geoy = '';
   bool toSplitFee = true;
@@ -39,6 +40,7 @@ class _AddRequestState extends State<AddRequest> {
   TextEditingController stallController = TextEditingController();
   TextEditingController postalCodeController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController remarksController = TextEditingController();
   bool isFirstLoad = true;
   final _addRequestFormKey = GlobalKey<FormState>();
 
@@ -49,6 +51,7 @@ class _AddRequestState extends State<AddRequest> {
     stallController.dispose();
     postalCodeController.dispose();
     addressController.dispose();
+    remarksController.dispose();
     super.dispose();
   }
 
@@ -204,39 +207,40 @@ class _AddRequestState extends State<AddRequest> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                Stack(children: [
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: 20, left: 10, right: 10, bottom: 10),
-                    margin: EdgeInsets.all(8.0),
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(color: Colors.black54),
-                    ),
-                    child: Wrap(
-                      // height: 30,
-                      children: _buildFoodTypeChips(),
-                    ),
-                  ),
-                  Positioned(
-                      left: 40,
-                      // top: -10,
-                      child: Container(
-                        color: Colors.white,
-                        child: Text(
-                          'Type of Food',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 12,
-                            fontFamily: "Poppins",
-                            // decoration: TextDecoration.underline,
-                            backgroundColor: Colors.white,
-                          ),
-                        ),
-                      )),
-                ]),
+                //For next release
+                // SizedBox(height: 10),
+                // Stack(children: [
+                //   Container(
+                //     padding: EdgeInsets.only(
+                //         top: 20, left: 10, right: 10, bottom: 10),
+                //     margin: EdgeInsets.all(8.0),
+                //     width: double.infinity,
+                //     decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(30),
+                //       border: Border.all(color: Colors.black54),
+                //     ),
+                //     child: Wrap(
+                //       // height: 30,
+                //       children: _buildFoodTypeChips(),
+                //     ),
+                //   ),
+                //   Positioned(
+                //       left: 40,
+                //       // top: -10,
+                //       child: Container(
+                //         color: Colors.white,
+                //         child: Text(
+                //           'Type of Food',
+                //           style: TextStyle(
+                //             color: Colors.black,
+                //             fontSize: 12,
+                //             fontFamily: "Poppins",
+                //             // decoration: TextDecoration.underline,
+                //             backgroundColor: Colors.white,
+                //           ),
+                //         ),
+                //       )),
+                // ]),
                 Container(
                   padding: EdgeInsets.only(top: 10, right: 10, left: 10),
                   child: TextFormField(
@@ -546,6 +550,35 @@ class _AddRequestState extends State<AddRequest> {
                         ),
                       )),
                 ]),
+                Container(
+                  padding: EdgeInsets.only(top: 10, right: 10, left: 10),
+                  child: TextFormField(
+                    controller: remarksController,
+                    maxLines: 3,
+                    maxLength: 100,
+                    maxLengthEnforced: true,
+                    decoration: new InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.info_outline_rounded,
+                        size: 40,
+                      ),
+                      labelText: "Remarks",
+                      hintText: "e.g. more info: type of food, contact number",
+
+                      border: new OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(25.0),
+                        borderSide: new BorderSide(),
+                      ),
+                      //fillColor: Colors.green
+                    ),
+                    onSaved: (value) {
+                      remarks = value;
+                    },
+                    style: new TextStyle(
+                      fontFamily: "Poppins",
+                    ),
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(
@@ -584,6 +617,7 @@ class _AddRequestState extends State<AddRequest> {
                               "platform": platformChoiceChipValue,
                               "created_time": FieldValue.serverTimestamp(),
                               "expired": 0,
+                              "remarks": remarks,
                             }).then((_) {
                               Flushbar(
                                 title: "Hey " + _auth.currentUser.displayName,
