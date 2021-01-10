@@ -64,22 +64,16 @@ class _MainActivityScreenState extends State<MainActivityScreen> {
   Widget build(BuildContext context) {
     // FirebaseUser user = await _auth.currentUser();
     String title;
-    return GestureDetector(
-      onVerticalDragDown: (dragdowndetails) {
-        // getRequests();
-        print('onVerticalDrag');
-      },
-      child: Container(
-        child: Expanded(
-            child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: 20,
-          itemBuilder: (context, index) {
-            return ListTile(title: Text('test qwe'));
-          },
-        )),
-      ),
+    return Container(
+      child: Expanded(
+          child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: 20,
+        itemBuilder: (context, index) {
+          return ListTile(title: Text('test qwe'));
+        },
+      )),
     );
   }
 }
@@ -315,413 +309,402 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
             onPressed: () {
               Navigator.pushNamed(context, AddRequest.id);
             }),
-        body: GestureDetector(
-          onVerticalDragDown: (dragdowndetails) {
-            print('onVerticalDrag');
-          },
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(top: 10, right: 10, left: 10),
-                child: Form(
-                  key: _showRequestsFormKey,
-                  autovalidateMode: AutovalidateMode.always,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        keyboardType: TextInputType.number,
-                        controller: postalCodeController,
-                        decoration: new InputDecoration(
-                          prefixIcon: Icon(
-                            Icons.my_location_rounded,
-                            size: 40,
-                          ),
-                          labelText: "My Postal Code",
-                          border: new OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(25.0),
-                            borderSide: new BorderSide(),
-                          ),
-                          //fillColor: Colors.green
+        body: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.only(top: 10, right: 10, left: 10),
+              child: Form(
+                key: _showRequestsFormKey,
+                autovalidateMode: AutovalidateMode.always,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: postalCodeController,
+                      decoration: new InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.my_location_rounded,
+                          size: 40,
                         ),
-                        validator: (val) {
-                          if (val.length != 6) {
-                            return "Please enter a valid Singapore 6-digit postal code";
-                          } else {
-                            return null;
-                          }
-                        },
-                        onChanged: (value) {
-                          if (value.length == 6) {
-                            postalCode = value;
-                            print(postalCode);
-                          }
-                        },
-                        onSaved: (value) {
+                        labelText: "My Postal Code",
+                        border: new OutlineInputBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          borderSide: new BorderSide(),
+                        ),
+                        //fillColor: Colors.green
+                      ),
+                      validator: (val) {
+                        if (val.length != 6) {
+                          return "Please enter a valid Singapore 6-digit postal code";
+                        } else {
+                          return null;
+                        }
+                      },
+                      onChanged: (value) {
+                        if (value.length == 6) {
                           postalCode = value;
-                        },
-                        style: new TextStyle(
-                          fontFamily: "Poppins",
-                        ),
+                          print(postalCode);
+                        }
+                      },
+                      onSaved: (value) {
+                        postalCode = value;
+                      },
+                      style: new TextStyle(
+                        fontFamily: "Poppins",
                       ),
-                      RoundedSmallButton(
-                        title: 'Find My Kakis!',
-                        colour: Colors.black87,
-                        onPressed: () async {
-                          if (_showRequestsFormKey.currentState.validate()) {
-                            _showRequestsFormKey.currentState.save();
-                            var url =
-                                'https://developers.onemap.sg/commonapi/search?searchVal=$postalCode&returnGeom=Y&getAddrDetails=Y&pageNum=1';
+                    ),
+                    RoundedSmallButton(
+                      title: 'Find My Kakis!',
+                      colour: Colors.black87,
+                      onPressed: () async {
+                        if (_showRequestsFormKey.currentState.validate()) {
+                          _showRequestsFormKey.currentState.save();
+                          var url =
+                              'https://developers.onemap.sg/commonapi/search?searchVal=$postalCode&returnGeom=Y&getAddrDetails=Y&pageNum=1';
 
-                            // Await the http get response, then decode the json-formatted response.
-                            var response = await http.get(url);
-                            //TODO to do a pop up for user to choose if there are more than 1 result?
-                            if (response.statusCode == 200) {
-                              var jsonResponse =
-                                  convert.jsonDecode(response.body);
-                              var result = jsonResponse['found'];
-                              int resultCount = int.parse(result.toString());
-                              if (resultCount != 0) {
-                                searchStarted = true;
-                                var blkNo =
-                                    jsonResponse['results'][0]['BLK_NO'];
-                                var roadName =
-                                    jsonResponse['results'][0]['ROAD_NAME'];
-                                geoy = jsonResponse['results'][0]['LATITUDE'];
-                                geox = jsonResponse['results'][0]['LONGITUDE'];
+                          // Await the http get response, then decode the json-formatted response.
+                          var response = await http.get(url);
+                          //TODO to do a pop up for user to choose if there are more than 1 result?
+                          if (response.statusCode == 200) {
+                            var jsonResponse =
+                                convert.jsonDecode(response.body);
+                            var result = jsonResponse['found'];
+                            int resultCount = int.parse(result.toString());
+                            if (resultCount != 0) {
+                              searchStarted = true;
+                              var blkNo = jsonResponse['results'][0]['BLK_NO'];
+                              var roadName =
+                                  jsonResponse['results'][0]['ROAD_NAME'];
+                              geoy = jsonResponse['results'][0]['LATITUDE'];
+                              geox = jsonResponse['results'][0]['LONGITUDE'];
 
-                                center = geo.point(
-                                    latitude: double.parse(geoy),
-                                    longitude: double.parse(geox));
-                                setState(() {
-                                  requestStream = newStream(center);
-                                });
-                                // address = blkNo.toString() + ' ' + roadName.toString();
-                                // addressController.text =
-                                //     blkNo.toString() + ' ' + roadName.toString();
-                              } else {
-                                postalCodeController.text = '';
-                              }
-
-                              print(jsonResponse);
+                              center = geo.point(
+                                  latitude: double.parse(geoy),
+                                  longitude: double.parse(geox));
+                              setState(() {
+                                requestStream = newStream(center);
+                              });
+                              // address = blkNo.toString() + ' ' + roadName.toString();
+                              // addressController.text =
+                              //     blkNo.toString() + ' ' + roadName.toString();
                             } else {
-                              print(
-                                  'Request failed with status: ${response.statusCode}.');
+                              postalCodeController.text = '';
                             }
-                          }
 
-                          // requestStream = requestStreamController.stream;
-                        },
-                      ),
-                    ],
-                  ),
+                            print(jsonResponse);
+                          } else {
+                            print(
+                                'Request failed with status: ${response.statusCode}.');
+                          }
+                        }
+
+                        // requestStream = requestStreamController.stream;
+                      },
+                    ),
+                    SizedBox(height: 5),
+                  ],
                 ),
               ),
+            ),
 
-              Expanded(
-                  child: StreamBuilder<List<DocumentSnapshot>>(
-                // stream: firestoreInstance.collection("requests").snapshots(),
+            Expanded(
+                child: StreamBuilder<List<DocumentSnapshot>>(
+              // stream: firestoreInstance.collection("requests").snapshots(),
 
-                stream: requestStream,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.black87,
-                          strokeWidth: 10,
-                        ),
-                      );
-                    default:
-                      if (snapshot.hasError) {
-                        return Container(
-                          margin: EdgeInsets.all(15.0),
-                          child: Center(
-                            child: TyperAnimatedTextKit(
-                              isRepeatingAnimation: false,
-                              // duration: Duration(milliseconds: 8000),
-                              text: [
-                                "There is a technical glitch, please try again."
-                              ],
-                              textStyle: TextStyle(
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w900,
-                              ),
+              stream: requestStream,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.black87,
+                        strokeWidth: 10,
+                      ),
+                    );
+                  default:
+                    if (snapshot.hasError) {
+                      return Container(
+                        margin: EdgeInsets.all(15.0),
+                        child: Center(
+                          child: TyperAnimatedTextKit(
+                            isRepeatingAnimation: false,
+                            // duration: Duration(milliseconds: 8000),
+                            text: [
+                              "There is a technical glitch, please try again."
+                            ],
+                            textStyle: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
-                        );
-                      }
-                      return (snapshot.data == null ||
-                                  snapshot.data.length == 0) &&
-                              searchStarted
-                          ? Container(
-                              margin: EdgeInsets.all(15.0),
-                              child: Center(
-                                child: TyperAnimatedTextKit(
-                                  isRepeatingAnimation: false,
-                                  // duration: Duration(milliseconds: 8000),
-                                  text: [
-                                    "Unable to find any kakis within 1km! Please help us to share the app with your neighbours group chat or Facebook group. Thanks!"
-                                  ],
-                                  textStyle: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                        ),
+                      );
+                    }
+                    return (snapshot.data == null ||
+                                snapshot.data.length == 0) &&
+                            searchStarted
+                        ? Container(
+                            margin: EdgeInsets.all(15.0),
+                            child: Center(
+                              child: TyperAnimatedTextKit(
+                                isRepeatingAnimation: false,
+                                // duration: Duration(milliseconds: 8000),
+                                text: [
+                                  "Unable to find any kakis within 1km yet! Do try again later and help us to share the app with your neighbours group chat or Facebook group. Thanks!"
+                                ],
+                                textStyle: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w900,
                                 ),
                               ),
-                            )
-                          : ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              // itemCount: snapshot.data.documents.length,
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                // List rev = snapshot.data.documents.reversed.toList();
+                            ),
+                          )
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            // itemCount: snapshot.data.documents.length,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              // List rev = snapshot.data.documents.reversed.toList();
 
-                                DocumentSnapshot data = snapshot.data[index];
-                                GeoPoint requestGeoPoint =
-                                    data['geo_point']['geopoint'];
-                                double dist = center.distance(
-                                        lat: requestGeoPoint.latitude,
-                                        lng: requestGeoPoint.longitude) *
-                                    1000;
-                                String requestId = data.id;
-                                String requestorName =
-                                    data['username'].toString();
-                                String requestorId = data['user_id'].toString();
-                                Timestamp orderTimeStamp = data['date_time'];
-                                DateTime orderDateTime = DateTime.parse(
-                                    orderTimeStamp.toDate().toString());
-                                DateFormat orderDateTimeFormat =
-                                    new DateFormat('dd MMM yyyy hh:mm a');
-                                String orderDateTimeString =
-                                    orderDateTimeFormat.format(orderDateTime);
-                                Image platform =
-                                    Image.asset('images/others.png');
-                                String vendor = data['vendor'];
-                                String remarks = data['remarks'];
-                                if (remarks.length == 0) {
-                                  remarks = 'NA';
+                              DocumentSnapshot data = snapshot.data[index];
+                              GeoPoint requestGeoPoint =
+                                  data['geo_point']['geopoint'];
+                              double dist = center.distance(
+                                      lat: requestGeoPoint.latitude,
+                                      lng: requestGeoPoint.longitude) *
+                                  1000;
+                              String requestId = data.id;
+                              String requestorName =
+                                  data['username'].toString();
+                              String requestorId = data['user_id'].toString();
+                              Timestamp orderTimeStamp = data['date_time'];
+                              DateTime orderDateTime = DateTime.parse(
+                                  orderTimeStamp.toDate().toString());
+                              DateFormat orderDateTimeFormat =
+                                  new DateFormat('dd MMM yyyy hh:mm a');
+                              String orderDateTimeString =
+                                  orderDateTimeFormat.format(orderDateTime);
+                              Image platform = Image.asset('images/others.png');
+                              String vendor = data['vendor'];
+                              String remarks = data['remarks'];
+                              if (remarks.length == 0) {
+                                remarks = 'NA';
+                              }
+                              if (data['platform'] != null) {
+                                if (data['platform'] == 1) {
+                                  platform = Image.asset('images/grabfood.png');
+                                } else if (data['platform'] == 2) {
+                                  platform =
+                                      Image.asset('images/foodpanda.png');
+                                } else if (data['platform'] == 3) {
+                                  platform =
+                                      Image.asset('images/deliveroo.png');
+                                } else if (data['platform'] == 4) {
+                                  platform = Image.asset('images/whyq.png');
                                 }
-                                if (data['platform'] != null) {
-                                  if (data['platform'] == 1) {
-                                    platform =
-                                        Image.asset('images/grabfood.png');
-                                  } else if (data['platform'] == 2) {
-                                    platform =
-                                        Image.asset('images/foodpanda.png');
-                                  } else if (data['platform'] == 3) {
-                                    platform =
-                                        Image.asset('images/deliveroo.png');
-                                  } else if (data['platform'] == 4) {
-                                    platform = Image.asset('images/whyq.png');
-                                  }
+                              }
+                              String shareDeliveryFee = 'Yes';
+                              if (data['fees'] != null) {
+                                if (data['fees'] == 2) {
+                                  shareDeliveryFee =
+                                      'No (Rem to say thank you!)';
                                 }
-                                String shareDeliveryFee = 'Yes';
-                                if (data['fees'] != null) {
-                                  if (data['fees'] == 2) {
-                                    shareDeliveryFee =
-                                        'No (Rem to say thank you!)';
-                                  }
-                                }
+                              }
 
-                                //For next release
-                                // String cuisineString = '';
-                                // List<String> cuisineOptions = [
-                                //   'Fast Food',
-                                //   'Bubble Tea',
-                                //   'Hawker',
-                                //   'Western',
-                                //   'Chinese',
-                                //   'Muslim',
-                                //   'Indian',
-                                //   'Thai',
-                                //   'Korean',
-                                //   'Japanese',
-                                //   'Others'
-                                // ];
-                                // List<dynamic> selectedCuisineOptions = [
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                //   false,
-                                // ];
+                              //For next release
+                              // String cuisineString = '';
+                              // List<String> cuisineOptions = [
+                              //   'Fast Food',
+                              //   'Bubble Tea',
+                              //   'Hawker',
+                              //   'Western',
+                              //   'Chinese',
+                              //   'Muslim',
+                              //   'Indian',
+                              //   'Thai',
+                              //   'Korean',
+                              //   'Japanese',
+                              //   'Others'
+                              // ];
+                              // List<dynamic> selectedCuisineOptions = [
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              //   false,
+                              // ];
 
-                                // if (data['type_of_food'] != null) {
-                                //   selectedCuisineOptions = data['type_of_food'];
-                                //   int index = 0;
-                                //   for (bool type in selectedCuisineOptions) {
-                                //     if (type) {
-                                //       if (cuisineString.length == 0)
-                                //         cuisineString = cuisineOptions[index];
-                                //       else
-                                //         cuisineString = cuisineString +
-                                //             ',' +
-                                //             cuisineOptions[index];
-                                //     }
-                                //     index++;
-                                //   }
-                                // }
-                                return Container(
-                                  margin: EdgeInsets.all(5.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    border: Border.all(color: Colors.black54),
+                              // if (data['type_of_food'] != null) {
+                              //   selectedCuisineOptions = data['type_of_food'];
+                              //   int index = 0;
+                              //   for (bool type in selectedCuisineOptions) {
+                              //     if (type) {
+                              //       if (cuisineString.length == 0)
+                              //         cuisineString = cuisineOptions[index];
+                              //       else
+                              //         cuisineString = cuisineString +
+                              //             ',' +
+                              //             cuisineOptions[index];
+                              //     }
+                              //     index++;
+                              //   }
+                              // }
+                              return Container(
+                                margin: EdgeInsets.all(5.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Colors.black54),
+                                ),
+                                child: ListTile(
+                                  leading: Container(
+                                    child: platform,
                                   ),
-                                  child: ListTile(
-                                    leading: Container(
-                                      child: platform,
-                                    ),
-                                    title: Text(
+                                  title: Text(
+                                    vendor,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Text(
+                                      //   'Type of cuisine: ' + cuisineString,
+                                      //   style:
+                                      //       TextStyle(color: Colors.black87),
+                                      // ),
+                                      RichText(
+                                        text: TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                                text: 'Address: ',
+                                                style: TextStyle(
+                                                    color: Colors.black87)),
+                                            TextSpan(
+                                                text: data['address'],
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    decoration: TextDecoration
+                                                        .underline),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () {
+                                                        Navigator.pushNamed(
+                                                          context,
+                                                          GoogleMapScreen.id,
+                                                          arguments: <String,
+                                                              dynamic>{
+                                                            'latitude':
+                                                                requestGeoPoint
+                                                                    .latitude,
+                                                            'longitude':
+                                                                requestGeoPoint
+                                                                    .longitude,
+                                                          },
+                                                        );
+                                                      }),
+                                          ],
+                                        ),
+                                      ),
+                                      Text(
+                                        'Order Time: ' + orderDateTimeString,
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                      Text(
+                                        'Split Delivery fee: ' +
+                                            shareDeliveryFee,
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                      Text(
+                                        'Distance: ' +
+                                            dist.round().toString() +
+                                            'm',
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                      Text(
+                                        'Remarks: ' + remarks,
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                    ],
+                                  ),
+                                  isThreeLine: true,
+                                  trailing: buildTrailingItem(
+                                      context,
+                                      requestorId,
+                                      requestorName,
                                       vendor,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        // Text(
-                                        //   'Type of cuisine: ' + cuisineString,
-                                        //   style:
-                                        //       TextStyle(color: Colors.black87),
-                                        // ),
-                                        RichText(
-                                          text: TextSpan(
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                  text: 'Address: ',
-                                                  style: TextStyle(
-                                                      color: Colors.black87)),
-                                              TextSpan(
-                                                  text: data['address'],
-                                                  style: TextStyle(
-                                                      color: Colors.blue,
-                                                      decoration: TextDecoration
-                                                          .underline),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          Navigator.pushNamed(
-                                                            context,
-                                                            GoogleMapScreen.id,
-                                                            arguments: <String,
-                                                                dynamic>{
-                                                              'latitude':
-                                                                  requestGeoPoint
-                                                                      .latitude,
-                                                              'longitude':
-                                                                  requestGeoPoint
-                                                                      .longitude,
-                                                            },
-                                                          );
-                                                        }),
-                                            ],
-                                          ),
-                                        ),
-                                        Text(
-                                          'Order Time: ' + orderDateTimeString,
-                                          style:
-                                              TextStyle(color: Colors.black87),
-                                        ),
-                                        Text(
-                                          'Split Delivery fee: ' +
-                                              shareDeliveryFee,
-                                          style:
-                                              TextStyle(color: Colors.black87),
-                                        ),
-                                        Text(
-                                          'Distance: ' +
-                                              dist.round().toString() +
-                                              'm',
-                                          style:
-                                              TextStyle(color: Colors.black87),
-                                        ),
-                                        Text(
-                                          'Remarks: ' + remarks,
-                                          style:
-                                              TextStyle(color: Colors.black87),
-                                        ),
-                                      ],
-                                    ),
-                                    isThreeLine: true,
-                                    trailing: buildTrailingItem(
-                                        context,
-                                        requestorId,
-                                        requestorName,
-                                        vendor,
-                                        requestId,
-                                        data),
-                                    // Padding(
-                                    //   padding: const EdgeInsets.only(top: 10.0),
-                                    //   child: Material(
-                                    //     elevation: 5.0,
-                                    //     color: Colors.black87,
-                                    //     borderRadius: BorderRadius.circular(20.0),
-                                    //     child: MaterialButton(
-                                    //       onPressed: () {
-                                    //         _isNewChatPeer(
-                                    //             _auth.currentUser.uid,
-                                    //             _auth.currentUser.displayName,
-                                    //             requestorId,
-                                    //             requestorName,
-                                    //             vendor);
-                                    //         Navigator.pushNamed(
-                                    //           context,
-                                    //           Chat.id,
-                                    //           arguments: <String, String>{
-                                    //             'requestorName': requestorName,
-                                    //             'requestorId': requestorId,
-                                    //             'vendor': vendor,
-                                    //           },
-                                    //         );
-                                    //       },
-                                    //       minWidth: 80.0,
-                                    //       height: 35.0,
-                                    //       child: Text(
-                                    //         'Chat',
-                                    //         style: TextStyle(
-                                    //           color: Colors.white,
-                                    //           fontWeight: FontWeight.bold,
-                                    //           fontSize: 16,
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                  ),
-                                );
-                              },
-                            );
-                  }
-                },
-              ))
-              // Container(
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.end,
-              //     crossAxisAlignment: CrossAxisAlignment.end,
-              //     children: [
-              //       Padding(
-              //           padding: EdgeInsets.only(right: 30, bottom: 30),
-              //           child: FloatingActionButton(
-              //               backgroundColor: Colors.black87,
-              //               child: Icon(Icons.add),
-              //               elevation: 20,
-              //               onPressed: () {
-              //                 Navigator.pushNamed(context, AddRequest.id);
-              //               })),
-              //     ],
-              //   ),
-              // )
-            ],
-          ),
+                                      requestId,
+                                      data),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.only(top: 10.0),
+                                  //   child: Material(
+                                  //     elevation: 5.0,
+                                  //     color: Colors.black87,
+                                  //     borderRadius: BorderRadius.circular(20.0),
+                                  //     child: MaterialButton(
+                                  //       onPressed: () {
+                                  //         _isNewChatPeer(
+                                  //             _auth.currentUser.uid,
+                                  //             _auth.currentUser.displayName,
+                                  //             requestorId,
+                                  //             requestorName,
+                                  //             vendor);
+                                  //         Navigator.pushNamed(
+                                  //           context,
+                                  //           Chat.id,
+                                  //           arguments: <String, String>{
+                                  //             'requestorName': requestorName,
+                                  //             'requestorId': requestorId,
+                                  //             'vendor': vendor,
+                                  //           },
+                                  //         );
+                                  //       },
+                                  //       minWidth: 80.0,
+                                  //       height: 35.0,
+                                  //       child: Text(
+                                  //         'Chat',
+                                  //         style: TextStyle(
+                                  //           color: Colors.white,
+                                  //           fontWeight: FontWeight.bold,
+                                  //           fontSize: 16,
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                ),
+                              );
+                            },
+                          );
+                }
+              },
+            ))
+            // Container(
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     crossAxisAlignment: CrossAxisAlignment.end,
+            //     children: [
+            //       Padding(
+            //           padding: EdgeInsets.only(right: 30, bottom: 30),
+            //           child: FloatingActionButton(
+            //               backgroundColor: Colors.black87,
+            //               child: Icon(Icons.add),
+            //               elevation: 20,
+            //               onPressed: () {
+            //                 Navigator.pushNamed(context, AddRequest.id);
+            //               })),
+            //     ],
+            //   ),
+            // )
+          ],
         ),
       ),
     );
@@ -806,14 +789,5 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
         ),
       );
     }
-  }
-}
-
-class ShowEmptyScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Please fill in the postal code'),
-    );
   }
 }

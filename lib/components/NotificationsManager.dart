@@ -176,15 +176,15 @@ class NotificationsManager {
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-      // Platform.isAndroid ? 'com.dabao_together' : 'com.duytq.flutterchatdemo',
-      'com.dabao_together',
-      'Dabao Together',
-      'Dabao Together',
-      playSound: true,
-      enableVibration: true,
-      importance: Importance.max,
-      priority: Priority.high,
-    );
+        // Platform.isAndroid ? 'com.dabao_together' : 'com.duytq.flutterchatdemo',
+        'com.dabao_together',
+        'Dabao Together',
+        'Dabao Together',
+        playSound: true,
+        enableVibration: true,
+        importance: Importance.max,
+        priority: Priority.high,
+        icon: "notification_icon");
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
     var platformChannelSpecifics = new NotificationDetails(
         android: androidPlatformChannelSpecifics,

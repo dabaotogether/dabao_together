@@ -83,137 +83,118 @@ class _MyPastRequestsScreenState extends State<MyPastRequestsScreen> {
         //   selectedItemColor: Colors.amber[800],
         //   onTap: _onItemTapped,
         // ),
-        body: GestureDetector(
-          onVerticalDragDown: (dragdowndetails) {
-            print('onVerticalDrag');
-          },
-          child: Column(
-            children: [
-              Expanded(
-                  child: StreamBuilder<QuerySnapshot>(
-                // stream: firestoreInstance.collection("requests").snapshots(),
+        body: Column(
+          children: [
+            Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+              // stream: firestoreInstance.collection("requests").snapshots(),
 
-                stream: requestStream,
-                builder: (context, snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                    case ConnectionState.waiting:
-                      return Center(
-                        child: CircularProgressIndicator(
-                          backgroundColor: Colors.black87,
-                          strokeWidth: 10,
-                        ),
-                      );
-                    default:
-                      return snapshot.data == null || snapshot.data.size == 0
-                          ? Container(
-                              margin: EdgeInsets.all(15.0),
-                              child: Center(
-                                child: TyperAnimatedTextKit(
-                                  isRepeatingAnimation: false,
-                                  // duration: Duration(milliseconds: 8000),
-                                  text: [
-                                    "No jio history or no expired jio yet. Please post to jio your neighbours!"
-                                  ],
-                                  textStyle: TextStyle(
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+              stream: requestStream,
+              builder: (context, snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.black87,
+                        strokeWidth: 10,
+                      ),
+                    );
+                  default:
+                    return snapshot.data == null || snapshot.data.size == 0
+                        ? Container(
+                            margin: EdgeInsets.all(15.0),
+                            child: Center(
+                              child: TyperAnimatedTextKit(
+                                isRepeatingAnimation: false,
+                                // duration: Duration(milliseconds: 8000),
+                                text: [
+                                  "No jio history or no expired jio yet. Please post to jio your neighbours!"
+                                ],
+                                textStyle: TextStyle(
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w900,
                                 ),
                               ),
-                            )
-                          : ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              // itemCount: snapshot.data.documents.length,
-                              itemCount: snapshot.data.size,
-                              itemBuilder: (context, index) {
-                                // List rev = snapshot.data.documents.reversed.toList();
+                            ),
+                          )
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            // itemCount: snapshot.data.documents.length,
+                            itemCount: snapshot.data.size,
+                            itemBuilder: (context, index) {
+                              // List rev = snapshot.data.documents.reversed.toList();
 
-                                DocumentSnapshot data =
-                                    snapshot.data.docs[index];
+                              DocumentSnapshot data = snapshot.data.docs[index];
 
-                                String requestId = data.id;
-                                String requestorName =
-                                    data['username'].toString();
-                                String requestorId = data['user_id'].toString();
-                                Timestamp orderTimeStamp = data['date_time'];
-                                DateTime orderDateTime = DateTime.parse(
-                                    orderTimeStamp.toDate().toString());
-                                DateFormat orderDateTimeFormat =
-                                    new DateFormat('dd MMM yyyy hh:mm a');
-                                String orderDateTimeString =
-                                    orderDateTimeFormat.format(orderDateTime);
-                                Image platform =
-                                    Image.asset('images/others.png');
-                                String vendor = data['vendor'];
-                                if (data['platform'] != null) {
-                                  if (data['platform'] == 1) {
-                                    platform =
-                                        Image.asset('images/grabfood.png');
-                                  } else if (data['platform'] == 2) {
-                                    platform =
-                                        Image.asset('images/foodpanda.png');
-                                  } else if (data['platform'] == 3) {
-                                    platform =
-                                        Image.asset('images/deliveroo.png');
-                                  } else if (data['platform'] == 4) {
-                                    platform = Image.asset('images/whyq.png');
-                                  }
+                              String requestId = data.id;
+                              String requestorName =
+                                  data['username'].toString();
+                              String requestorId = data['user_id'].toString();
+                              Timestamp orderTimeStamp = data['date_time'];
+                              DateTime orderDateTime = DateTime.parse(
+                                  orderTimeStamp.toDate().toString());
+                              DateFormat orderDateTimeFormat =
+                                  new DateFormat('dd MMM yyyy hh:mm a');
+                              String orderDateTimeString =
+                                  orderDateTimeFormat.format(orderDateTime);
+                              Image platform = Image.asset('images/others.png');
+                              String vendor = data['vendor'];
+                              if (data['platform'] != null) {
+                                if (data['platform'] == 1) {
+                                  platform = Image.asset('images/grabfood.png');
+                                } else if (data['platform'] == 2) {
+                                  platform =
+                                      Image.asset('images/foodpanda.png');
+                                } else if (data['platform'] == 3) {
+                                  platform =
+                                      Image.asset('images/deliveroo.png');
+                                } else if (data['platform'] == 4) {
+                                  platform = Image.asset('images/whyq.png');
                                 }
+                              }
 
-                                return Container(
-                                  margin: EdgeInsets.all(5.0),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    border: Border.all(color: Colors.black54),
+                              return Container(
+                                margin: EdgeInsets.all(5.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(color: Colors.black54),
+                                ),
+                                child: ListTile(
+                                  leading: Container(
+                                    child: platform,
                                   ),
-                                  child: ListTile(
-                                    leading: Container(
-                                      child: platform,
-                                    ),
-                                    title: Text(
-                                      vendor,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    subtitle: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Address: ' + data['address'],
-                                          style:
-                                              TextStyle(color: Colors.black87),
-                                        ),
-                                        Text(
-                                          'Order Time: ' + orderDateTimeString,
-                                          style:
-                                              TextStyle(color: Colors.black87),
-                                        ),
-                                      ],
-                                    ),
-                                    isThreeLine: true,
+                                  title: Text(
+                                    vendor,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
                                   ),
-                                );
-                              },
-                            );
-                  }
-                },
-              ))
-            ],
-          ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Address: ' + data['address'],
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                      Text(
+                                        'Order Time: ' + orderDateTimeString,
+                                        style: TextStyle(color: Colors.black87),
+                                      ),
+                                    ],
+                                  ),
+                                  isThreeLine: true,
+                                ),
+                              );
+                            },
+                          );
+                }
+              },
+            ))
+          ],
         ),
       ),
-    );
-  }
-}
-
-class ShowEmptyScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Please fill in the postal code'),
     );
   }
 }

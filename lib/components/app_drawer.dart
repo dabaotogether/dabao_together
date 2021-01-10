@@ -128,24 +128,6 @@ class _AppDrawerState extends State<AppDrawer> {
                         },
                       ),
                       ListTile(
-                        selected: widget.selectedIndex == 3,
-                        selectedTileColor: Colors.grey[800],
-                        leading: Icon(
-                          Icons.lightbulb_outline_rounded,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          'Dabao Hacks',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {
-                          // Update the state of the app
-                          // ...
-                          // Then close the drawer
-                          Navigator.pop(context);
-                        },
-                      ),
-                      ListTile(
                         selected: widget.selectedIndex == 4,
                         selectedTileColor: Colors.grey[800],
                         leading: Icon(

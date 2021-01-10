@@ -1,5 +1,4 @@
 import 'package:dabao_together/Screens/Add_Request.dart';
-import 'package:dabao_together/Screens/ChatAppBar.dart';
 import 'package:dabao_together/Screens/ChatHome.dart';
 import 'package:dabao_together/Screens/Enter_OTP.dart';
 import 'package:dabao_together/Screens/GoogleMapScreen.dart';
@@ -8,13 +7,12 @@ import 'package:dabao_together/Screens/Main.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 import 'Screens/ChatScreen.dart';
 import 'Screens/Contact_Us.dart';
 import 'Screens/Edit_Request.dart';
 import 'Screens/Enter_Username.dart';
-import 'Screens/Home.dart';
+import 'Screens/IntroScreen.dart';
 import 'Screens/Login.dart';
 import 'Screens/My_Past_Requests.dart';
 import 'Screens/My_Requests.dart';
@@ -35,61 +33,57 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => MenuProvider(),
-      child: MaterialApp(
-          title: 'Dabao Together',
-          theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
-            primarySwatch: Colors.blue,
-            primaryColor: Color(0xFF000000),
-            accentColor: Color(0xFF000000),
-            colorScheme: ColorScheme.light(primary: const Color(0xFF000000)),
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
-            // This makes the visual density adapt to the platform that you run
-            // the app on. For desktop platforms, the controls will be smaller and
-            // closer together (more dense) than on mobile platforms.
-            visualDensity: VisualDensity.adaptivePlatformDensity,
-          ),
-          // onGenerateTitle: (context) => tr("app_name"),
-          // home: ChangeNotifierProvider(
-          //   create: (_) => MenuProvider(),
-          //   child: WelcomeScreen(),
-          // ),
-          // initialRoute: WelcomeScreen.id,
-          home: WelcomeScreen(),
-          routes: {
-            WelcomeScreen.id: (context) => WelcomeScreen(),
-            LoginScreen.id: (context) => LoginScreen(),
-            RegistrationScreen.id: (context) => RegistrationScreen(),
-            MainActivityContainer.id: (context) => MainActivityContainer(),
-            EnterUserName.id: (context) => EnterUserName(),
-            PinCodeVerificationScreen.id: (context) =>
-                PinCodeVerificationScreen(),
-            HomeScreen.id: (context) => HomeScreen(),
-            AddRequest.id: (context) => AddRequest(),
-            EditRequest.id: (context) => EditRequest(),
-            Chat.id: (context) => Chat(),
-            ChatHomeScreen.id: (context) => ChatHomeScreen(),
-            // ChatScreen.id: (context) => ChatScreen(),
-            ChatAppBarScreen.id: (context) => ChatAppBarScreen(),
-            MyRequestsScreen.id: (context) => MyRequestsScreen(),
-            MyPastRequestsScreen.id: (context) => MyPastRequestsScreen(),
-            HomeNavScreen.id: (context) => HomeNavScreen(),
-            TncScreen.id: (context) => TncScreen(),
-            GoogleMapScreen.id: (context) => GoogleMapScreen(),
-            ContactUsScreen.id: (context) => ContactUsScreen(),
-            // Chat.id: (context) => Chat(),
-          }),
-    );
+    return MaterialApp(
+        title: 'Dabao Together',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+          primaryColor: Color(0xFF000000),
+          accentColor: Color(0xFF000000),
+          colorScheme: ColorScheme.light(primary: const Color(0xFF000000)),
+          buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          // This makes the visual density adapt to the platform that you run
+          // the app on. For desktop platforms, the controls will be smaller and
+          // closer together (more dense) than on mobile platforms.
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        // onGenerateTitle: (context) => tr("app_name"),
+        // home: ChangeNotifierProvider(
+        //   create: (_) => MenuProvider(),
+        //   child: WelcomeScreen(),
+        // ),
+        // initialRoute: WelcomeScreen.id,
+        home: WelcomeScreen(),
+        routes: {
+          WelcomeScreen.id: (context) => WelcomeScreen(),
+          LoginScreen.id: (context) => LoginScreen(),
+          RegistrationScreen.id: (context) => RegistrationScreen(),
+          MainActivityContainer.id: (context) => MainActivityContainer(),
+          EnterUserName.id: (context) => EnterUserName(),
+          PinCodeVerificationScreen.id: (context) =>
+              PinCodeVerificationScreen(),
+          AddRequest.id: (context) => AddRequest(),
+          EditRequest.id: (context) => EditRequest(),
+          Chat.id: (context) => Chat(),
+          ChatHomeScreen.id: (context) => ChatHomeScreen(),
+          // ChatScreen.id: (context) => ChatScreen(),
+          MyRequestsScreen.id: (context) => MyRequestsScreen(),
+          MyPastRequestsScreen.id: (context) => MyPastRequestsScreen(),
+          HomeNavScreen.id: (context) => HomeNavScreen(),
+          TncScreen.id: (context) => TncScreen(),
+          GoogleMapScreen.id: (context) => GoogleMapScreen(),
+          ContactUsScreen.id: (context) => ContactUsScreen(),
+          IntroScreen.id: (context) => IntroScreen(),
+          // Chat.id: (context) => Chat(),
+        });
   }
 }
 

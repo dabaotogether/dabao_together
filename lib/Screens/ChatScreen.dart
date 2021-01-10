@@ -366,7 +366,7 @@ class ChatScreenState extends State<ChatScreen> {
                       fontSize: 12.0,
                       fontStyle: FontStyle.italic),
                 ),
-                margin: EdgeInsets.only(right: 10.0,top: 5.0, bottom: 5.0),
+                margin: EdgeInsets.only(right: 10.0, top: 5.0, bottom: 5.0),
               ),
             ],
           ),

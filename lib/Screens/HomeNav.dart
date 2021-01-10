@@ -42,7 +42,6 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
         .where('user_id', isEqualTo: _auth.currentUser.uid)
         .snapshots();
 
-    print('newStream');
     return requestsDoc;
   }
 
@@ -98,15 +97,6 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
           index: _selectedIndex,
         ),
       ),
-    );
-  }
-}
-
-class ShowEmptyScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Text('Please fill in the postal code'),
     );
   }
 }

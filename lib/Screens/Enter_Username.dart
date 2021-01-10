@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
+import 'package:dabao_together/Screens/IntroScreen.dart';
 import 'package:dabao_together/Screens/TncScreen.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:dabao_together/constants.dart';
@@ -145,6 +146,10 @@ class _EnterUserNameState extends State<EnterUserName> {
     _firebaseMessaging.getToken().then((token) {
       tokenId = token;
     });
+    FirebaseMessaging().onTokenRefresh.listen((newToken) {
+      // Save newToken
+      updateToken(newToken);
+    });
   }
 
   void getCurrentUser() async {
@@ -153,6 +158,28 @@ class _EnterUserNameState extends State<EnterUserName> {
       if (user != null) {
         loggedInUser = user;
       }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void updateToken(String newTokenId) async {
+    try {
+      User user = _auth.currentUser;
+      // UserUpdateInfo updateInfo = UserUpdateInfo();
+      // updateInfo.displayName = userName;
+      // await user.updateProfile(displayName: userName);
+      // await user.reload();
+      user = _auth.currentUser;
+
+      firestoreInstance.collection("users").doc(user.uid).update({
+        "token_id": newTokenId,
+      }).then((_) {
+        print('saving to firestore done!');
+      });
+      if (user.displayName != null)
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeNavScreen.id, (_) => false);
     } catch (e) {
       print(e);
     }
@@ -177,7 +204,7 @@ class _EnterUserNameState extends State<EnterUserName> {
       });
       if (user.displayName != null)
         Navigator.pushNamedAndRemoveUntil(
-            context, HomeNavScreen.id, (_) => false);
+            context, IntroScreen.id, (_) => false);
     } catch (e) {
       print(e);
     }

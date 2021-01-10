@@ -1,6 +1,5 @@
 import 'package:dabao_together/components/app_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 final _auth = FirebaseAuth.instance;
@@ -35,28 +34,23 @@ class ContactUsScreen extends StatelessWidget {
               SizedBox(height: 20),
               Container(
                 padding: EdgeInsets.all(20),
-                child: RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                          text:
-                              'If you have any enquries or feedback, please feel free to drop an email to ',
-                          style: TextStyle(color: Colors.black87)),
-                      TextSpan(
-                          text: 'heyoz@dabaotogether.com',
-                          style: TextStyle(
-                              color: Colors.blue,
-                              decoration: TextDecoration.underline),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              _launchURL();
-                            }),
-                    ],
-                  ),
+                child: SelectableText.rich(
+                  TextSpan(
+                      text:
+                          'If you have any enquries/feedback, please feel free to drop an email to heyoz@dabaotogether.com',
+                      style: TextStyle(color: Colors.black87)),
                 ),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 2),
+              Container(
+                padding: EdgeInsets.all(20),
+                child: SelectableText.rich(
+                  TextSpan(
+                      text:
+                          'Do forgive us if we took a long time to respond as this is our part-time project. Thanks!',
+                      style: TextStyle(color: Colors.black87)),
+                ),
+              ),
               SizedBox(height: 10),
             ],
           )),
@@ -69,7 +63,5 @@ class ContactUsScreen extends StatelessWidget {
       path: 'heyoz@dabaotogether.com',
       queryParameters: {'subject': 'Feedback'},
     );
-
-    print(emailLaunchUri1.toString());
   }
 }
