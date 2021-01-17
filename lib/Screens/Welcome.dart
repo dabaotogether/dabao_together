@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
+import 'package:dabao_together/components/NotificationsManager.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     super.initState();
-
+    NotificationsManager newManager = NotificationsManager(context);
+    newManager.configLocalNotification();
+    newManager.registerNotification();
     controller =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
     animation = ColorTween(begin: Colors.blueGrey, end: Colors.white)

@@ -4,11 +4,9 @@ import 'dart:convert' as convert;
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/Add_Request.dart';
-import 'package:dabao_together/Screens/ChatHome.dart';
 import 'package:dabao_together/Screens/ChatScreen.dart';
 import 'package:dabao_together/Screens/Edit_Request.dart';
 import 'package:dabao_together/Screens/GoogleMapScreen.dart';
-import 'package:dabao_together/Screens/My_Requests.dart';
 import 'package:dabao_together/components/app_drawer.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -108,51 +106,11 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
         .collection(collectionRef: queryRef)
         .within(
             center: newCenter, radius: 1, field: 'geo_point', strictMode: true);
-    print('newStream');
     return doc;
-  }
-
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 35, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (_selectedIndex == 2) {
-        Navigator.pushNamed(
-          context,
-          ChatHomeScreen.id,
-        );
-      }
-      if (_selectedIndex == 1) {
-        Navigator.pushNamed(
-          context,
-          MyRequestsScreen.id,
-        );
-      }
-    });
   }
 
   void _isNewChatPeer(String user_id, String username, String requestorId,
       String requestorName, String vendor) {
-    print('_isNewChatPeer');
-    print(user_id);
-    print(username);
     firestoreInstance
         .collection('users')
         .doc(requestorId)

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/ChatScreen.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
+import 'package:dabao_together/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,11 +43,7 @@ class NotificationsManager {
   }
 
   void registerNotification() {
-    print('at NotiManager');
-    print(context);
     getCurrentUser();
-    print(currentUserId);
-    print(currentUserName);
     firebaseMessaging.requestNotificationPermissions();
 
     firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
@@ -54,42 +51,42 @@ class NotificationsManager {
       pushNotificationId = message['data']['idFrom'];
       pushNotificationUsername = message['data']['userFrom'];
       pushNotificationVendor = message['data']['vendor'];
-      print('idFrom: $pushNotificationId');
       Platform.isAndroid
           ? showNotification(message['notification'])
           : showNotification(message['aps']['alert']);
       return;
     }, onResume: (Map<String, dynamic> message) {
       print('onResume: $message');
-      pushNotificationId = message['data']['idFrom'];
-      pushNotificationUsername = message['data']['userFrom'];
-      pushNotificationVendor = message['data']['vendor'];
-
-      Navigator.pushNamed(
-        context,
-        Chat.id,
-        arguments: <String, String>{
-          'requestorName': pushNotificationUsername,
-          'requestorId': pushNotificationId,
-          'vendor': pushNotificationVendor,
-        },
-      );
+      _navigateToChatScreen(message);
+      // pushNotificationId = message['data']['idFrom'];
+      // pushNotificationUsername = message['data']['userFrom'];
+      // pushNotificationVendor = message['data']['vendor'];
+      // Navigator.pushNamed(
+      //   context,
+      //   Chat.id,
+      //   arguments: <String, String>{
+      //     'requestorName': pushNotificationUsername,
+      //     'requestorId': pushNotificationId,
+      //     'vendor': pushNotificationVendor,
+      //   },
+      // );
       return;
     }, onLaunch: (Map<String, dynamic> message) {
       print('onLaunch: $message');
       if (_auth.currentUser != null) {
-        pushNotificationId = message['data']['idFrom'];
-        pushNotificationUsername = message['data']['userFrom'];
-        pushNotificationVendor = message['data']['vendor'];
-        Navigator.pushNamed(
-          context,
-          Chat.id,
-          arguments: <String, String>{
-            'requestorName': pushNotificationUsername,
-            'requestorId': pushNotificationId,
-            'vendor': pushNotificationVendor,
-          },
-        );
+        // pushNotificationId = message['data']['idFrom'];
+        // pushNotificationUsername = message['data']['userFrom'];
+        // pushNotificationVendor = message['data']['vendor'];
+        _navigateToChatScreen(message);
+        // Navigator.pushNamed(
+        //   context,
+        //   Chat.id,
+        //   arguments: <String, String>{
+        //     'requestorName': pushNotificationUsername,
+        //     'requestorId': pushNotificationId,
+        //     'vendor': pushNotificationVendor,
+        //   },
+        // );
       }
 
       return;
@@ -104,6 +101,23 @@ class NotificationsManager {
     }).catchError((err) {
       Fluttertoast.showToast(msg: err.message.toString());
     });
+  }
+
+  void _navigateToChatScreen(Map<String, dynamic> message) async {
+    // Navigator.popUntil(context, (Route<dynamic> route) => route is PageRoute);
+    // await Navigator.of(context).push(PageRouteBuilder(
+    //     opaque: false, pageBuilder: (context, _, __) => NewPage();
+    pushNotificationId = message['data']['idFrom'];
+    pushNotificationUsername = message['data']['userFrom'];
+    pushNotificationVendor = message['data']['vendor'];
+    navigatorKey.currentState.pushNamed(
+      Chat.id,
+      arguments: <String, String>{
+        'requestorName': pushNotificationUsername,
+        'requestorId': pushNotificationId,
+        'vendor': pushNotificationVendor,
+      },
+    );
   }
 
   void configLocalNotification() async {
@@ -150,8 +164,7 @@ class NotificationsManager {
     if (payload != null) {
       if (pushNotificationId != null) {
         if (_auth.currentUser != null) {
-          Navigator.pushNamed(
-            context,
+          navigatorKey.currentState.pushNamed(
             Chat.id,
             arguments: <String, String>{
               'requestorName': pushNotificationUsername,
@@ -160,8 +173,7 @@ class NotificationsManager {
             },
           );
         } else {
-          Navigator.pushNamed(
-            context,
+          navigatorKey.currentState.pushNamed(
             WelcomeScreen.id,
           );
         }
@@ -204,8 +216,6 @@ class NotificationsManager {
   }
 
   void unregisterNotification() {
-    print('at unregisterNotification');
-
     // firebaseMessaging.requestNotificationPermissions();
 
     firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {

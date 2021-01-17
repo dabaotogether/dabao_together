@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/ChatHome.dart';
 import 'package:dabao_together/Screens/Main.dart';
@@ -7,12 +5,10 @@ import 'package:dabao_together/Screens/My_Requests.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:geoflutterfire/geoflutterfire.dart';
 
 // final _firestore = Firestore.instance;
 User loggedInUser;
 final firestoreInstance = FirebaseFirestore.instance;
-final geo = Geoflutterfire();
 final _auth = FirebaseAuth.instance;
 
 class HomeNavScreen extends StatefulWidget {
@@ -27,22 +23,9 @@ class HomeNavScreen extends StatefulWidget {
 }
 
 class _HomeNavScreenState extends State<HomeNavScreen> {
-  Stream<QuerySnapshot> requestStream;
-
   @override
   void initState() {
-    requestStream = newStream();
     super.initState();
-  }
-
-  Stream<QuerySnapshot> newStream() {
-    var requestsDoc = firestoreInstance
-        .collection('requests')
-        .where('expired', isEqualTo: 0)
-        .where('user_id', isEqualTo: _auth.currentUser.uid)
-        .snapshots();
-
-    return requestsDoc;
   }
 
   int _selectedIndex = 0;
@@ -57,11 +40,6 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
   TextEditingController postalCodeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String postalCode = '';
-    String address = '';
-    String geox = '';
-    String geoy = '';
-
     return SafeArea(
       child: Scaffold(
         // appBar: AppBar(title: Text('My Jios')),

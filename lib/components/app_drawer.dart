@@ -104,8 +104,14 @@ class _AppDrawerState extends State<AppDrawer> {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, HomeNavScreen.id, (_) => false);
+                          Navigator.pushNamed(
+                            context,
+                            HomeNavScreen.id,
+                            // (_) => false,
+                            arguments: <String, dynamic>{
+                              'selectedIndex': 0,
+                            },
+                          );
                         },
                       ),
                       ListTile(
@@ -123,6 +129,7 @@ class _AppDrawerState extends State<AppDrawer> {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
+                          print('app drawer past request');
                           Navigator.pushNamedAndRemoveUntil(
                               context, MyPastRequestsScreen.id, (_) => false);
                         },

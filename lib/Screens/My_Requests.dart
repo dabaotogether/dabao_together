@@ -246,8 +246,6 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
       String vendor,
       String requestId,
       DocumentSnapshot documentData) {
-    print('buildTrailingItem');
-
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: Material(

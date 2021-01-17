@@ -32,6 +32,7 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
+    print('chatscreen');
     final Map args = ModalRoute.of(context).settings.arguments as Map;
     String requestorName = '';
     String requestorId = '';
@@ -41,16 +42,8 @@ class _ChatState extends State<Chat> {
       requestorId = args['requestorId'];
       requestVendor = args['vendor'];
       peerId = requestorId;
-      print('chatscreen');
-      print(args['requestorName']);
-      print(args['requestorId']);
-      print(args['vendor']);
     }
     String appbarString = 'sender';
-    print('chatpage');
-    print(requestorName);
-    print(requestVendor);
-    print(requestorId);
     if (requestorName != null) {
       appbarString = requestorName + " (" + requestVendor + ")";
     }
@@ -191,14 +184,6 @@ class ChatScreenState extends State<ChatScreen> {
       });
       uploadFile();
     }
-  }
-
-  void getSticker() {
-    // Hide keyboard when sticker appear
-    focusNode.unfocus();
-    setState(() {
-      isShowSticker = !isShowSticker;
-    });
   }
 
   Future uploadFile() async {
@@ -517,27 +502,24 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      child: Stack(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              // List of messages
-              buildListMessage(),
+    return Stack(
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            // List of messages
+            buildListMessage(),
 
-              // Sticker
-              // (isShowSticker ? buildSticker() : Container()),
+            // Sticker
+            // (isShowSticker ? buildSticker() : Container()),
 
-              // Input content
-              buildInput(),
-            ],
-          ),
+            // Input content
+            buildInput(),
+          ],
+        ),
 
-          // Loading
-          buildLoading()
-        ],
-      ),
-      // onWillPop: onBackPress,
+        // Loading
+        buildLoading()
+      ],
     );
   }
 
