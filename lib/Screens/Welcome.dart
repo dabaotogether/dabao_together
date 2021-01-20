@@ -3,6 +3,7 @@ import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/components/NotificationsManager.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import 'register.dart';
@@ -87,14 +88,25 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               colour: Colors.black87,
               onPressed: () {
                 if (_auth.currentUser != null) {
-                  if (_auth.currentUser.displayName != null) {
-                    // Navigator.pushNamed(context, MainActivityContainer.id);
-
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, HomeNavScreen.id, (_) => false);
-                  } else {
-                    Navigator.pushNamed(context, RegistrationScreen.id);
-                  }
+                  String phoneNumber = _auth.currentUser.phoneNumber;
+                  _auth.currentUser.reload().then((value) {
+                    if (_auth.currentUser.displayName != null) {
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, HomeNavScreen.id, (_) => false);
+                    } else {
+                      Navigator.pushNamed(context, RegistrationScreen.id);
+                    }
+                  }).catchError((e) {
+                    print(e);
+                    if (e.toString().contains("user-disabled")) {
+                      Flushbar(
+                        title: "Hey",
+                        message:
+                            "Your account $phoneNumber has been disabled. Please contact us at heyoz@dabaotogether.com. Thank you.",
+                        duration: Duration(seconds: 2),
+                      )..show(context);
+                    }
+                  });
                 } else {
                   Navigator.pushNamed(context, RegistrationScreen.id);
                 }

@@ -199,6 +199,7 @@ class _EnterUserNameState extends State<EnterUserName> {
         "username": user.displayName,
         "user_id": user.uid,
         "token_id": tokenId,
+        "notification_enabled": true,
       }).then((_) {
         print('saving to firestore done!');
       });

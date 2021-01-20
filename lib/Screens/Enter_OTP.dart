@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -271,10 +272,8 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
         verificationId: verificationId, smsCode: smsCode);
     _auth.signInWithCredential(credential).then((UserCredential result) async {
       if (result.user.displayName == null) {
-        print('is new user');
         Navigator.pushNamed(context, EnterUserName.id);
       } else {
-        print('not new user');
         Navigator.pushNamedAndRemoveUntil(
             context, HomeNavScreen.id, (_) => false);
       }
@@ -294,6 +293,14 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
         hasError = true;
       });
       print(e);
+      if (e.toString().contains("user-disabled")) {
+        Flushbar(
+          title: "Hey",
+          message:
+              "Your account has been disabled. Please contact us at heyoz@dabaotogether.com. Thank you.",
+          duration: Duration(seconds: 2),
+        )..show(context);
+      }
     });
   }
 }

@@ -49,15 +49,17 @@ class _ChatState extends State<Chat> {
     }
 
     // String appbarString = 'requestorName' + 'asdasda';
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          appbarString,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            appbarString,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
+        body: ChatScreen(),
       ),
-      body: ChatScreen(),
     );
   }
 }

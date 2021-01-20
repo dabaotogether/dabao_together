@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Dabao Together',
+        debugShowCheckedModeBanner: false,
         navigatorKey: navigatorKey,
         theme: ThemeData(
           // This is the theme of your application.
