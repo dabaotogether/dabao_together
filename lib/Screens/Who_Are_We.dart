@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 
 final _auth = FirebaseAuth.instance;
 
-class ContactUsScreen extends StatelessWidget {
-  static const String id = 'contact_us_screen';
+class WhoAreWeScreen extends StatelessWidget {
+  static const String id = 'who_are_we_screen';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(title: Text('Ping Us')),
+          appBar: AppBar(title: Text('Who Are We?')),
           drawer: AppDrawer(
             username: _auth.currentUser.displayName == null
                 ? 'Error'
                 : _auth.currentUser.displayName,
-            selectedIndex: 4,
+            selectedIndex: 3,
           ),
           body: ListView(
             children: <Widget>[
@@ -23,7 +23,7 @@ class ContactUsScreen extends StatelessWidget {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  text: 'Drop Us A Mail!',
+                  text: 'You might wonder who we are? Or you might not.',
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -37,21 +37,7 @@ class ContactUsScreen extends StatelessWidget {
                 child: SelectableText.rich(
                   TextSpan(
                       text:
-                          'If you have any enquries/feedback, please feel free to drop an email to heyoz@dabaotogether.com or drop by our Dabao Together Facebook page to talk to us. (Note: Please do not send us pigeon mail as our windows are usually closed. Real windows, not Microsoft.)',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 20,
-                      )),
-                  textAlign: TextAlign.justify,
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                padding: EdgeInsets.all(20),
-                child: SelectableText.rich(
-                  TextSpan(
-                      text:
-                          'We would really appreciate your feedback but do bear with us if we are taking a long time to respond as this is our part-time project. Thanks!',
+                          'Either way, since you are here, we really hope you will enjoy the Dabao Together experience. Please like our Dabao Together Facebook Page and your feedback/suggestions are most welcome. Thank you!',
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 20,

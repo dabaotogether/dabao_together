@@ -3,6 +3,7 @@ import 'package:dabao_together/Screens/Contact_Us.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/Screens/My_Past_Requests.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
+import 'package:dabao_together/Screens/Who_Are_We.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
@@ -117,24 +118,21 @@ class _AppDrawerState extends State<AppDrawer> {
                         selected: widget.selectedIndex == 1,
                         selectedTileColor: Colors.grey[800],
                         leading: Icon(
-                          Icons.local_activity_rounded,
+                          Icons.local_activity_outlined,
                           color: Colors.white,
                         ),
                         title: Text(
-                          'Main',
+                          'Jio Jio Page',
                           style: TextStyle(color: Colors.white),
                         ),
                         onTap: () {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
-                          Navigator.pushNamed(
+                          Navigator.pushNamedAndRemoveUntil(
                             context,
                             HomeNavScreen.id,
-                            // (_) => false,
-                            arguments: <String, dynamic>{
-                              'selectedIndex': 0,
-                            },
+                            (_) => false,
                           );
                         },
                       ),
@@ -153,38 +151,38 @@ class _AppDrawerState extends State<AppDrawer> {
                           // Update the state of the app
                           // ...
                           // Then close the drawer
-                          print('app drawer past request');
                           Navigator.pushNamedAndRemoveUntil(
-                              context, MyPastRequestsScreen.id, (_) => false);
+                            context,
+                            MyPastRequestsScreen.id,
+                            (_) => false,
+                          );
                         },
                       ),
                       ListTile(
-                        selected: widget.selectedIndex == 4,
+                        selected: widget.selectedIndex == 3,
                         selectedTileColor: Colors.grey[800],
                         leading: Icon(
                           Icons.info_outline_rounded,
                           color: Colors.white,
                         ),
                         title: Text(
-                          'About Us',
+                          'Who are we?',
                           style: TextStyle(color: Colors.white),
                         ),
                         onTap: () {
-                          // Update the state of the app
-                          // ...
-                          // Then close the drawer
-                          Navigator.pop(context);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, WhoAreWeScreen.id, (_) => false);
                         },
                       ),
                       ListTile(
-                        selected: widget.selectedIndex == 5,
+                        selected: widget.selectedIndex == 4,
                         selectedTileColor: Colors.grey[800],
                         leading: Icon(
-                          Icons.contact_mail_rounded,
+                          Icons.email_outlined,
                           color: Colors.white,
                         ),
                         title: Text(
-                          'Contact Us',
+                          'Ping Us',
                           style: TextStyle(color: Colors.white),
                         ),
                         onTap: () {
@@ -197,10 +195,8 @@ class _AppDrawerState extends State<AppDrawer> {
                         },
                       ),
                       ListTile(
-                        selected: widget.selectedIndex == 6,
-                        selectedTileColor: Colors.grey[800],
                         leading: Icon(
-                          Icons.notifications_rounded,
+                          Icons.notifications_active_outlined,
                           color: Colors.white,
                         ),
                         title: Text(
@@ -244,34 +240,6 @@ class _AppDrawerState extends State<AppDrawer> {
                             );
                           },
                         ),
-                        // trailing: Switch(
-                        //   value: isSwitched,
-                        //   onChanged: (value) {
-                        //     setState(() {
-                        //       isSwitched = value;
-                        //       if (!isSwitched) {
-                        //         FirebaseFirestore.instance
-                        //             .collection('users')
-                        //             .doc(_auth.currentUser.uid)
-                        //             .update({'notification_enabled': false});
-                        //         Flushbar(
-                        //           title: "Heyo",
-                        //           message:
-                        //               "As the notification is turned off, do check the in-app messages regularly or indicate your phone number in the post.",
-                        //           duration: Duration(seconds: 3),
-                        //         )..show(context);
-                        //       } else {
-                        //         FirebaseFirestore.instance
-                        //             .collection('users')
-                        //             .doc(_auth.currentUser.uid)
-                        //             .update({'notification_enabled': true});
-                        //       }
-                        //     });
-                        //   },
-                        //   inactiveTrackColor: Colors.redAccent,
-                        //   activeTrackColor: Colors.greenAccent,
-                        //   activeColor: Colors.white,
-                        // ),
                         onTap: () {
                           // Update the state of the app
                           // ...

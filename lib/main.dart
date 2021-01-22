@@ -4,6 +4,7 @@ import 'package:dabao_together/Screens/Enter_OTP.dart';
 import 'package:dabao_together/Screens/GoogleMapScreen.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/Screens/Main.dart';
+import 'package:dabao_together/Screens/Who_Are_We.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
           GoogleMapScreen.id: (context) => GoogleMapScreen(),
           ContactUsScreen.id: (context) => ContactUsScreen(),
           IntroScreen.id: (context) => IntroScreen(),
+          WhoAreWeScreen.id: (context) => WhoAreWeScreen(),
           // Chat.id: (context) => Chat(),
         });
   }
