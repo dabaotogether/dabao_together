@@ -41,7 +41,6 @@ class _MainActivityScreenState extends State<MainActivityScreen> {
   }
 
   void getCurrentUser() async {
-    print('getCurrentUser');
     try {
       final user = _auth.currentUser;
       if (user != null) {
@@ -78,11 +77,7 @@ class _MainActivityScreenState extends State<MainActivityScreen> {
 
 class MainActivityContainer extends StatefulWidget {
   static const String id = 'main_activity_screen';
-  // MainActivityContainer({@required this.colour, this.cardChild, this.onPress});
-  //
-  // final Color colour;
-  // final Widget cardChild;
-  // final Function onPress;
+
   @override
   _MainActivityContainerState createState() => _MainActivityContainerState();
 }
@@ -132,91 +127,6 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
       'vendor': vendor,
       'created_time': FieldValue.serverTimestamp(),
       'deleted': 0,
-    });
-
-    // DocumentReference documentReference =
-    //     firestoreInstance.collection("users").doc(user_id);
-    // Map<String, dynamic> activeChatMainMap = new Map();
-    // Map<String, String> activeChatMap = new Map();
-    // Map<String, dynamic> activeRequestorChatMainMap = new Map();
-    // Map<String, String> activeRequestorChatMap = new Map();
-    // documentReference.get().then((data) {
-    //   if (data.exists) {
-    //     print('first');
-    //
-    //     // print(data['active_chat'].toString());
-    //     if (data.data()['active_chat'] == null) {
-    //       print('second');
-    //       activeChatMap[requestorId] = requestorName;
-    //       activeChatMainMap['active_chat'] = activeChatMap;
-    //       activeRequestorChatMap[user_id] = username;
-    //       activeRequestorChatMainMap['active_chat'] = activeRequestorChatMap;
-    //     } else {
-    //       activeChatMap = data['active_chat'];
-    //       if (!activeChatMap.containsKey(requestorId)) {
-    //         activeChatMap[requestorId] = requestorName;
-    //         activeChatMainMap['active_chat'] = activeChatMap;
-    //         activeRequestorChatMap[user_id] = username;
-    //         activeRequestorChatMainMap['active_chat'] = activeRequestorChatMap;
-    //       }
-    //     }
-    //     firestoreInstance
-    //         .collection('users')
-    //         .doc(user_id)
-    //         .set(activeChatMainMap, SetOptions(merge: true));
-    //     firestoreInstance
-    //         .collection('users')
-    //         .doc(requestorId)
-    //         .set(activeRequestorChatMainMap, SetOptions(merge: true));
-    //
-    //   } else {
-    //     print("No such user");
-    //   }
-    // });
-  }
-
-  void _isNewChatPeerTemp(String user_id, String username, String requestorId,
-      String requestorName) {
-    print('_isNewChatPeer');
-    print(user_id);
-    print(username);
-    DocumentReference documentReference =
-        firestoreInstance.collection("users").doc(user_id);
-    Map<String, dynamic> activeChatMainMap = new Map();
-    Map<String, String> activeChatMap = new Map();
-    Map<String, dynamic> activeRequestorChatMainMap = new Map();
-    Map<String, String> activeRequestorChatMap = new Map();
-    documentReference.get().then((data) {
-      if (data.exists) {
-        print('first');
-
-        // print(data['active_chat'].toString());
-        if (data.data()['active_chat'] == null) {
-          print('second');
-          activeChatMap[requestorId] = requestorName;
-          activeChatMainMap['active_chat'] = activeChatMap;
-          activeRequestorChatMap[user_id] = username;
-          activeRequestorChatMainMap['active_chat'] = activeRequestorChatMap;
-        } else {
-          activeChatMap = data['active_chat'];
-          if (!activeChatMap.containsKey(requestorId)) {
-            activeChatMap[requestorId] = requestorName;
-            activeChatMainMap['active_chat'] = activeChatMap;
-            activeRequestorChatMap[user_id] = username;
-            activeRequestorChatMainMap['active_chat'] = activeRequestorChatMap;
-          }
-        }
-        firestoreInstance
-            .collection('users')
-            .doc(user_id)
-            .set(activeChatMainMap, SetOptions(merge: true));
-        firestoreInstance
-            .collection('users')
-            .doc(requestorId)
-            .set(activeRequestorChatMainMap, SetOptions(merge: true));
-      } else {
-        print("No such user");
-      }
     });
   }
 
@@ -301,7 +211,6 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                       onChanged: (value) {
                         if (value.length == 6) {
                           postalCode = value;
-                          print(postalCode);
                         }
                       },
                       onSaved: (value) {
@@ -348,8 +257,6 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                             } else {
                               postalCodeController.text = '';
                             }
-
-                            print(jsonResponse);
                           } else {
                             print(
                                 'Request failed with status: ${response.statusCode}.');
@@ -675,7 +582,6 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
       String vendor,
       String requestId,
       DocumentSnapshot documentData) {
-    print('buildTrailingItem');
     if (_auth.currentUser.uid == requestorId) {
       return Padding(
         padding: const EdgeInsets.only(top: 10.0),

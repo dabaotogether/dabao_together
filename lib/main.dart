@@ -14,7 +14,6 @@ import 'Screens/Contact_Us.dart';
 import 'Screens/Edit_Request.dart';
 import 'Screens/Enter_Username.dart';
 import 'Screens/IntroScreen.dart';
-import 'Screens/Login.dart';
 import 'Screens/My_Past_Requests.dart';
 import 'Screens/My_Requests.dart';
 import 'Screens/Register.dart';
@@ -69,7 +68,6 @@ class MyApp extends StatelessWidget {
         home: WelcomeScreen(),
         routes: {
           WelcomeScreen.id: (context) => WelcomeScreen(),
-          LoginScreen.id: (context) => LoginScreen(),
           RegistrationScreen.id: (context) => RegistrationScreen(),
           MainActivityContainer.id: (context) => MainActivityContainer(),
           EnterUserName.id: (context) => EnterUserName(),

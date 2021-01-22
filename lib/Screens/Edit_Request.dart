@@ -67,7 +67,7 @@ class _EditRequestState extends State<EditRequest> {
       requestorName = args['requestorName'];
       requestorId = args['requestorId'];
       requestDoc = args['documentSnapshot'];
-      print(requestDoc.id);
+
       requestDateTime = DateFormat('yyyy-MM-dd hh:mm')
           .parse((requestDoc['date_time'] as Timestamp).toDate().toString());
     }
@@ -291,7 +291,6 @@ class _EditRequestState extends State<EditRequest> {
                     onChanged: (value) async {
                       if (value.length == 6) {
                         postalCode = value;
-                        print(postalCode);
                         var url =
                             'https://developers.onemap.sg/commonapi/search?searchVal=$postalCode&returnGeom=Y&getAddrDetails=Y&pageNum=1';
 
@@ -314,8 +313,6 @@ class _EditRequestState extends State<EditRequest> {
                           } else {
                             addressEditController.text = '';
                           }
-
-                          print(jsonResponse);
                         } else {
                           print(
                               'Request failed with status: ${response.statusCode}.');
@@ -385,8 +382,6 @@ class _EditRequestState extends State<EditRequest> {
                           selectedColor: Colors.black54,
                           selected: deliveryFeeEditChoiceChipValue == 1,
                           onSelected: (bool selected) {
-                            print('Split');
-                            print(selected);
                             setState(() {
                               deliveryFeeEditChoiceChipValue = selected ? 1 : 2;
                             });
@@ -407,12 +402,8 @@ class _EditRequestState extends State<EditRequest> {
                           selectedColor: Colors.black54,
                           selected: deliveryFeeEditChoiceChipValue == 2,
                           onSelected: (bool selected) {
-                            print('No Split');
-                            print(selected);
-
                             setState(() {
                               deliveryFeeEditChoiceChipValue = selected ? 2 : 1;
-                              print(deliveryFeeEditChoiceChipValue);
                             });
                           },
                         ),
@@ -621,7 +612,6 @@ class _EditRequestState extends State<EditRequest> {
                         colour: Colors.black87,
                         onPressed: () {
                           if (_editRequestFormKey.currentState.validate()) {
-                            // print(addressController.value);
                             _editRequestFormKey.currentState.save();
 
                             selectedDateTime = new DateTime(

@@ -93,7 +93,6 @@ class NotificationsManager {
     });
 
     firebaseMessaging.getToken().then((token) {
-      print('token: $token');
       FirebaseFirestore.instance
           .collection('users')
           .doc(currentUserId)

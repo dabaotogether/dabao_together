@@ -38,20 +38,12 @@ class _AppDrawerState extends State<AppDrawer> {
     await docRef.get().then((data) {
       if (data.exists) {
         if (data.data()['notification_enabled'] != null) {
-          print('hereR?');
-          print(data.data()['notification_enabled']);
           isSwitched = data.data()['notification_enabled'];
-          print(isSwitched);
         }
       }
     });
   }
 
-  // String username;
-  // int selectedIndex;
-  // print (widget.username);
-
-  // _AppDrawerState(username, selectedIndex);
   @override
   Widget build(BuildContext context) {
     return SafeArea(

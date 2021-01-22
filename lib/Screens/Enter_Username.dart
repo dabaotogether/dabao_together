@@ -166,10 +166,6 @@ class _EnterUserNameState extends State<EnterUserName> {
   void updateToken(String newTokenId) async {
     try {
       User user = _auth.currentUser;
-      // UserUpdateInfo updateInfo = UserUpdateInfo();
-      // updateInfo.displayName = userName;
-      // await user.updateProfile(displayName: userName);
-      // await user.reload();
       user = _auth.currentUser;
 
       firestoreInstance.collection("users").doc(user.uid).update({
@@ -188,12 +184,9 @@ class _EnterUserNameState extends State<EnterUserName> {
   void commitUsernameAndToken(String userName) async {
     try {
       User user = _auth.currentUser;
-      // UserUpdateInfo updateInfo = UserUpdateInfo();
-      // updateInfo.displayName = userName;
       await user.updateProfile(displayName: userName);
       await user.reload();
       user = _auth.currentUser;
-      print(user.displayName);
 
       firestoreInstance.collection("users").doc(user.uid).set({
         "username": user.displayName,

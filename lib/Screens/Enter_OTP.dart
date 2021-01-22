@@ -164,7 +164,6 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                       //   print("Pressed");
                       // },
                       onChanged: (value) {
-                        print(value);
                         setState(() {
                           currentText = value;
                         });
@@ -277,15 +276,6 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
         Navigator.pushNamedAndRemoveUntil(
             context, HomeNavScreen.id, (_) => false);
       }
-      // FirebaseUser user =
-      //     await _auth.currentUser();
-      // UserUpdateInfo updateInfo =
-      //     UserUpdateInfo();
-      // updateInfo.displayName = userName;
-      // await user.updateProfile(updateInfo);
-      // await user.reload();
-      // user = await _auth.currentUser();
-      // print(user.displayName);
     }).catchError((e) {
       errorController
           .add(ErrorAnimationType.shake); // Triggering error shake animation

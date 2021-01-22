@@ -166,7 +166,6 @@ class _AddRequestState extends State<AddRequest> {
                       );
                       if (pickedTime != null) {
                         selectedTime = pickedTime;
-                        print(selectedTime);
                         timePickerController.text =
                             selectedTime.format(context);
                       }
@@ -291,8 +290,6 @@ class _AddRequestState extends State<AddRequest> {
                           } else {
                             addressController.text = '';
                           }
-
-                          print(jsonResponse);
                         } else {
                           print(
                               'Request failed with status: ${response.statusCode}.');

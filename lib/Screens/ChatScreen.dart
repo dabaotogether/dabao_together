@@ -32,7 +32,6 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
-    print('chatscreen');
     final Map args = ModalRoute.of(context).settings.arguments as Map;
     String requestorName = '';
     String requestorId = '';
@@ -157,14 +156,11 @@ class ChatScreenState extends State<ChatScreen> {
     prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id') ?? '';
     id = loggedInUser.uid;
-    print(id);
-    print(peerId);
     if (id.hashCode <= peerId.hashCode) {
       groupChatId = '$id-$peerId';
     } else {
       groupChatId = '$peerId-$id';
     }
-    print(groupChatId);
     // FirebaseFirestore.instance
     //     .collection('users')
     //     .doc(id)

@@ -106,36 +106,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         PinCodeVerificationScreen.id,
                         arguments: ScreenArguments(verificationId, phoneNumber),
                       );
-                      //show dialog to take input from the user
-                      // showDialog(
-                      //     context: context,
-                      //     barrierDismissible: false,
-                      //     builder: (context) => AlertDialog(
-                      //           title: Text("Enter SMS Code"),
-                      //           content: Column(
-                      //             mainAxisSize: MainAxisSize.min,
-                      //             children: <Widget>[
-                      //               TextField(
-                      //                 controller: _codeController,
-                      //               ),
-                      //             ],
-                      //           ),
-                      //           actions: <Widget>[
-                      //             FlatButton(
-                      //               child: Text("Done"),
-                      //               textColor: Colors.white,
-                      //               color: Colors.redAccent,
-                      //               onPressed: () {
-                      //                 auth_PhoneNumber(
-                      //                     verificationId, context);
-                      //               },
-                      //             )
-                      //           ],
-                      //         ));
                     },
                     codeAutoRetrievalTimeout: (String verificationId) {
                       verificationId = verificationId;
-                      print(verificationId);
                       print("Timeout");
                     },
                   );

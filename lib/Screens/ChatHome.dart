@@ -181,7 +181,6 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
       }
     } catch (e) {
       vendor = 'NA';
-      print('HERE HOR');
       print(e);
     }
 

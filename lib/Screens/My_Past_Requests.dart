@@ -17,11 +17,7 @@ final _auth = FirebaseAuth.instance;
 
 class MyPastRequestsScreen extends StatefulWidget {
   static const String id = 'my_past_requests_screen';
-  // MainActivityContainer({@required this.colour, this.cardChild, this.onPress});
-  //
-  // final Color colour;
-  // final Widget cardChild;
-  // final Function onPress;
+
   @override
   _MyPastRequestsScreenState createState() => _MyPastRequestsScreenState();
 }
@@ -42,19 +38,11 @@ class _MyPastRequestsScreenState extends State<MyPastRequestsScreen> {
         .where('user_id', isEqualTo: _auth.currentUser.uid)
         .snapshots();
 
-    print('newStream');
     return requestsDoc;
   }
 
-  final _showRequestsFormKey = GlobalKey<FormState>();
-  TextEditingController postalCodeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    String postalCode = '';
-    String address = '';
-    String geox = '';
-    String geoy = '';
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: Text('My Jio History')),
@@ -64,31 +52,10 @@ class _MyPastRequestsScreenState extends State<MyPastRequestsScreen> {
               : _auth.currentUser.displayName,
           selectedIndex: 2,
         ),
-        // bottomNavigationBar: BottomNavigationBar(
-        //   items: const <BottomNavigationBarItem>[
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.emoji_people_rounded),
-        //       label: 'Find Kakis',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.local_activity_rounded),
-        //       label: 'My Requests',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.chat_rounded),
-        //       label: 'Chats',
-        //     ),
-        //   ],
-        //   currentIndex: _selectedIndex,
-        //   selectedItemColor: Colors.amber[800],
-        //   onTap: _onItemTapped,
-        // ),
         body: Column(
           children: [
             Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-              // stream: firestoreInstance.collection("requests").snapshots(),
-
               stream: requestStream,
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {

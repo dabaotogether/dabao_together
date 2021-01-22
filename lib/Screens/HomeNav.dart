@@ -13,11 +13,7 @@ final _auth = FirebaseAuth.instance;
 
 class HomeNavScreen extends StatefulWidget {
   static const String id = 'home_navigation_screen';
-  // MainActivityContainer({@required this.colour, this.cardChild, this.onPress});
-  //
-  // final Color colour;
-  // final Widget cardChild;
-  // final Function onPress;
+
   @override
   _HomeNavScreenState createState() => _HomeNavScreenState();
 }
@@ -42,11 +38,6 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(title: Text('My Jios')),
-        // drawer: AppDrawer(
-        //   username: _auth.currentUser.displayName,
-        //   selectedIndex: 1,
-        // ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
