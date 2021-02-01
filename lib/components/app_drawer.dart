@@ -273,7 +273,7 @@ class _AppDrawerState extends State<AppDrawer> {
                               print('saving to firestore done!');
                             });
                             await _auth.signOut().whenComplete(() {
-                              // NotificationsManager newManager =
+                              //print NotificationsManager newManager =
                               //     NotificationsManager(context);
                               // newManager.unregisterNotification();
 

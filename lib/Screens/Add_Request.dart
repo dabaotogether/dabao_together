@@ -267,7 +267,6 @@ class _AddRequestState extends State<AddRequest> {
                     onChanged: (value) async {
                       if (value.length == 6) {
                         postalCode = value;
-                        print(postalCode);
                         var url =
                             'https://developers.onemap.sg/commonapi/search?searchVal=$postalCode&returnGeom=Y&getAddrDetails=Y&pageNum=1';
 

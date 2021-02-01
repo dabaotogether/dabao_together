@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:dabao_together/components/NotificationsManager.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/ChatScreen.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
@@ -65,10 +65,8 @@ class NotificationsManager {
     }, onLaunch: (Map<String, dynamic> message) {
       print('onLaunch: $message');
       if (_auth.currentUser != null) {
-        print('chatscreen');
         _navigateToChatScreen(message);
       } else {
-        print('welcomescreen');
         _navigateToWelcomeScreen();
       }
 
