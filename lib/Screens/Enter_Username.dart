@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/Screens/IntroScreen.dart';
 import 'package:dabao_together/Screens/TncScreen.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:dabao_together/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -138,18 +136,18 @@ class _EnterUserNameState extends State<EnterUserName> {
     );
   }
 
-  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   @override
   void initState() {
     super.initState();
     getCurrentUser();
-    _firebaseMessaging.getToken().then((token) {
-      tokenId = token;
-    });
-    FirebaseMessaging().onTokenRefresh.listen((newToken) {
-      // Save newToken
-      updateToken(newToken);
-    });
+    // _firebaseMessaging.getToken().then((token) {
+    //   tokenId = token;
+    // });
+    // FirebaseMessaging().onTokenRefresh.listen((newToken) {
+    //   // Save newToken
+    //   updateToken(newToken);
+    // });
   }
 
   void getCurrentUser() async {
@@ -163,23 +161,23 @@ class _EnterUserNameState extends State<EnterUserName> {
     }
   }
 
-  void updateToken(String newTokenId) async {
-    try {
-      User user = _auth.currentUser;
-      user = _auth.currentUser;
-
-      firestoreInstance.collection("users").doc(user.uid).update({
-        "token_id": newTokenId,
-      }).then((_) {
-        print('saving to firestore done!');
-      });
-      if (user.displayName != null)
-        Navigator.pushNamedAndRemoveUntil(
-            context, HomeNavScreen.id, (_) => false);
-    } catch (e) {
-      print(e);
-    }
-  }
+  // void updateToken(String newTokenId) async {
+  //   try {
+  //     User user = _auth.currentUser;
+  //     user = _auth.currentUser;
+  //
+  //     firestoreInstance.collection("users").doc(user.uid).update({
+  //       "token_id": newTokenId,
+  //     }).then((_) {
+  //       print('saving to firestore done!');
+  //     });
+  //     if (user.displayName != null)
+  //       Navigator.pushNamedAndRemoveUntil(
+  //           context, HomeNavScreen.id, (_) => false);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   void commitUsernameAndToken(String userName) async {
     try {
@@ -193,6 +191,7 @@ class _EnterUserNameState extends State<EnterUserName> {
         "user_id": user.uid,
         "token_id": tokenId,
         "notification_enabled": true,
+        "signed_in": true,
       }).then((_) {
         print('saving to firestore done!');
       });

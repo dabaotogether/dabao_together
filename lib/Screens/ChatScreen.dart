@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Components/full_photo.dart';
 import 'package:dabao_together/Components/loading.dart';
+import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +156,9 @@ class ChatScreenState extends State<ChatScreen> {
   readLocal() async {
     prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id') ?? '';
-    id = loggedInUser.uid;
+    if (loggedInUser != null) {
+      id = loggedInUser.uid;
+    }
     if (id.hashCode <= peerId.hashCode) {
       groupChatId = '$id-$peerId';
     } else {
@@ -500,25 +503,42 @@ class ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            // List of messages
-            buildListMessage(),
+    return WillPopScope(
+      child: Stack(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              // List of messages
+              buildListMessage(),
 
-            // Sticker
-            // (isShowSticker ? buildSticker() : Container()),
+              // Sticker
+              // (isShowSticker ? buildSticker() : Container()),
 
-            // Input content
-            buildInput(),
-          ],
-        ),
+              // Input content
+              buildInput(),
+            ],
+          ),
 
-        // Loading
-        buildLoading()
-      ],
+          // Loading
+          buildLoading()
+        ],
+      ),
+      onWillPop: _willPopCallback,
     );
+  }
+
+  Future<bool> _willPopCallback() async {
+    // await showDialog or Show add banners or whatever
+    // then
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      HomeNavScreen.id,
+      (_) => false,
+      arguments: <String, String>{
+        'selectedIndex': "2",
+      },
+    );
+    return Future.value(true);
   }
 
   Widget buildLoading() {

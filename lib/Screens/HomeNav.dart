@@ -25,7 +25,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
   }
 
   int _selectedIndex = 0;
-
+  bool _isFirstLoad = true;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -36,6 +36,14 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
   TextEditingController postalCodeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final Map args = ModalRoute.of(context).settings.arguments as Map;
+
+    if (args != null) {
+      if (args['selectedIndex'] != null && _isFirstLoad) {
+        _selectedIndex = int.parse(args['selectedIndex']);
+        _isFirstLoad = false;
+      }
+    }
     return SafeArea(
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(

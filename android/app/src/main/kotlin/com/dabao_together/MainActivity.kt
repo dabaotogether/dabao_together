@@ -1,4 +1,4 @@
-package com.dabao_together
+package com.dabaotogether
 
 import io.flutter.embedding.android.FlutterActivity
 

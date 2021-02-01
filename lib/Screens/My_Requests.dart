@@ -46,7 +46,6 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
         .where('user_id', isEqualTo: _auth.currentUser.uid)
         .snapshots();
 
-    print('newStream');
     return requestsDoc;
   }
 

@@ -4,11 +4,14 @@ import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/Screens/My_Past_Requests.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
 import 'package:dabao_together/Screens/Who_Are_We.dart';
+import 'package:dabao_together/components/NotificationsManager.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 bool isSwitched = true;
+
+final firestoreInstance = FirebaseFirestore.instance;
 
 class AppDrawer extends StatefulWidget {
   final String username;
@@ -23,25 +26,30 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   final _auth = FirebaseAuth.instance;
-
+  String userId = '';
   @override
   void initState() {
     super.initState();
+    if (_auth.currentUser != null) {
+      userId = _auth.currentUser.uid;
+    }
     _setToggleNotification();
   }
 
   void _setToggleNotification() async {
-    DocumentReference docRef = FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser.uid);
+    if (FirebaseAuth.instance.currentUser != null) {
+      DocumentReference docRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser.uid);
 
-    await docRef.get().then((data) {
-      if (data.exists) {
-        if (data.data()['notification_enabled'] != null) {
-          isSwitched = data.data()['notification_enabled'];
+      await docRef.get().then((data) {
+        if (data.exists) {
+          if (data.data()['notification_enabled'] != null) {
+            isSwitched = data.data()['notification_enabled'];
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   @override
@@ -196,10 +204,12 @@ class _AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(color: Colors.white),
                         ),
                         trailing: StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(FirebaseAuth.instance.currentUser.uid)
-                              .snapshots(),
+                          stream: FirebaseAuth.instance.currentUser != null
+                              ? FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(FirebaseAuth.instance.currentUser.uid)
+                                  .snapshots()
+                              : null,
                           initialData: null,
                           builder: (ctx, snap) {
                             return Switch(
@@ -254,10 +264,22 @@ class _AppDrawerState extends State<AppDrawer> {
                           borderSide:
                               BorderSide(color: Colors.white, width: 2.0),
                           onPressed: () async {
+                            await firestoreInstance
+                                .collection("users")
+                                .doc(userId)
+                                .update({
+                              "signed_in": false,
+                            }).then((_) {
+                              print('saving to firestore done!');
+                            });
                             await _auth.signOut().whenComplete(() {
                               // NotificationsManager newManager =
                               //     NotificationsManager(context);
                               // newManager.unregisterNotification();
+
+                              NotificationsManager newManager =
+                                  NotificationsManager(context);
+                              newManager.removeAllNotificationsFromTray();
                               Navigator.pushNamedAndRemoveUntil(
                                   context, WelcomeScreen.id, (_) => false);
                             });

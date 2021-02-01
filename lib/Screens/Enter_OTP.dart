@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
@@ -13,6 +15,7 @@ import 'Register.dart';
 
 final _auth = FirebaseAuth.instance;
 User loggedInUser;
+final firestoreInstance = FirebaseFirestore.instance;
 
 class PinCodeVerificationScreen extends StatefulWidget {
   static const String id = 'enter_otp_screen';
@@ -270,6 +273,14 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
     AuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: smsCode);
     _auth.signInWithCredential(credential).then((UserCredential result) async {
+      FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+      _firebaseMessaging.getToken().then((token) {
+        updateToken(token);
+      });
+      FirebaseMessaging().onTokenRefresh.listen((newToken) {
+        // Save newToken
+        updateToken(newToken);
+      });
       if (result.user.displayName == null) {
         Navigator.pushNamed(context, EnterUserName.id);
       } else {
@@ -292,5 +303,23 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
         )..show(context);
       }
     });
+  }
+
+  void updateToken(String newTokenId) async {
+    try {
+      User user = _auth.currentUser;
+
+      firestoreInstance.collection("users").doc(user.uid).update({
+        "token_id": newTokenId,
+        "signed_in": true,
+      }).then((_) {
+        print('saving to firestore done!');
+      });
+      if (user.displayName != null)
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeNavScreen.id, (_) => false);
+    } catch (e) {
+      print(e);
+    }
   }
 }

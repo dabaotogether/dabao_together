@@ -340,6 +340,7 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                       lat: requestGeoPoint.latitude,
                                       lng: requestGeoPoint.longitude) *
                                   1000;
+                              int roundedDist = (dist / 10).round() * 10;
                               String requestId = data.id;
                               String requestorName =
                                   data['username'].toString();
@@ -490,7 +491,7 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                       ),
                                       Text(
                                         'Distance: ' +
-                                            dist.round().toString() +
+                                            roundedDist.toString() +
                                             'm',
                                         style: TextStyle(color: Colors.black87),
                                       ),

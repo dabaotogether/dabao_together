@@ -24,7 +24,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const bodyStyle = TextStyle(fontSize: 20.0);
+    const bodyStyle = TextStyle(fontSize: 18.0);
     const pageDecoration = const PageDecoration(
       titleTextStyle: TextStyle(fontSize: 25.0, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
@@ -40,7 +40,7 @@ class _IntroScreenState extends State<IntroScreen> {
           PageViewModel(
             title: "A short intro before you start Dabao Together",
             body:
-                "To start searching for kakis, you can enter your postal code or post your jio using the bottom right burger button. Make use the bottom bar to navigate the various features.",
+                "To start searching for kakis, you can enter your postal code or post your jio using the bottom right burger button. Use the bottom bar to navigate the various features.",
             image: _buildImage('Main.jpg'),
             decoration: pageDecoration,
           ),
@@ -62,7 +62,7 @@ class _IntroScreenState extends State<IntroScreen> {
             image: _buildImage('dabao_together_new_logo.png'),
             title: "For your kind attention",
             body:
-                "It's inevitable that you will encounter some bad experiences such as delay in delivery, wrong order or even rude users. We hope you can stay positive and continue to spread the love!",
+                "It's inevitable that you will encounter some bad experiences such as delay in delivery, wrong order or even scammers. We hope you can stay positive and continue to spread the love!",
             decoration: pageDecoration,
           ),
           PageViewModel(

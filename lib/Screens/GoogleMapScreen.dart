@@ -32,6 +32,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
       body: GoogleMap(
         mapType: MapType.normal,
         markers: markerSet,
+        mapToolbarEnabled: true,
         initialCameraPosition: CameraPosition(
           target: LatLng(lat, lon),
           zoom: 18,

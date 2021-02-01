@@ -26,9 +26,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void initState() {
     super.initState();
-    NotificationsManager newManager = NotificationsManager(context);
-    newManager.configLocalNotification();
-    newManager.registerNotification();
+    // NotificationsManager newManager = NotificationsManager(context);
+    // newManager.configLocalNotification();
+    // newManager.registerNotification();
     controller =
         AnimationController(duration: Duration(seconds: 1), vsync: this);
     animation = ColorTween(begin: Colors.blueGrey, end: Colors.white)

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:99947365597:android:f2c408b112a2f1d0514734",
+        "mobilesdk_app_id": "1:99947365597:android:c458a8c42e4e79b3514734",
         "android_client_info": {
-          "package_name": "com.dabao_together"
+          "package_name": "com.dabaotogether"
         }
       },
       "oauth_client": [
@@ -30,6 +30,13 @@
             {
               "client_id": "99947365597-49ma9idc99inirjhkuhse66u4bhm81ln.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "99947365597-c1ejrvm4duvhnokg7m1i82r5l061o61c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.dabaotogether"
+              }
             }
           ]
         }

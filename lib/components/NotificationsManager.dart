@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:dabao_together/components/NotificationsManager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/ChatScreen.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
@@ -11,7 +11,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 final _auth = FirebaseAuth.instance;
 User loggedInUser;
@@ -57,49 +56,33 @@ class NotificationsManager {
       return;
     }, onResume: (Map<String, dynamic> message) {
       print('onResume: $message');
-      _navigateToChatScreen(message);
-      // pushNotificationId = message['data']['idFrom'];
-      // pushNotificationUsername = message['data']['userFrom'];
-      // pushNotificationVendor = message['data']['vendor'];
-      // Navigator.pushNamed(
-      //   context,
-      //   Chat.id,
-      //   arguments: <String, String>{
-      //     'requestorName': pushNotificationUsername,
-      //     'requestorId': pushNotificationId,
-      //     'vendor': pushNotificationVendor,
-      //   },
-      // );
+      if (_auth.currentUser != null) {
+        _navigateToChatScreen(message);
+      } else {
+        _navigateToWelcomeScreen();
+      }
       return;
     }, onLaunch: (Map<String, dynamic> message) {
       print('onLaunch: $message');
       if (_auth.currentUser != null) {
-        // pushNotificationId = message['data']['idFrom'];
-        // pushNotificationUsername = message['data']['userFrom'];
-        // pushNotificationVendor = message['data']['vendor'];
+        print('chatscreen');
         _navigateToChatScreen(message);
-        // Navigator.pushNamed(
-        //   context,
-        //   Chat.id,
-        //   arguments: <String, String>{
-        //     'requestorName': pushNotificationUsername,
-        //     'requestorId': pushNotificationId,
-        //     'vendor': pushNotificationVendor,
-        //   },
-        // );
+      } else {
+        print('welcomescreen');
+        _navigateToWelcomeScreen();
       }
 
       return;
     });
 
-    firebaseMessaging.getToken().then((token) {
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserId)
-          .update({'pushToken': token});
-    }).catchError((err) {
-      Fluttertoast.showToast(msg: err.message.toString());
-    });
+    // firebaseMessaging.getToken().then((token) {
+    //   FirebaseFirestore.instance
+    //       .collection('users')
+    //       .doc(currentUserId)
+    //       .update({'pushToken': token});
+    // }).catchError((err) {
+    //   Fluttertoast.showToast(msg: err.message.toString());
+    // });
   }
 
   void _navigateToChatScreen(Map<String, dynamic> message) async {
@@ -117,6 +100,11 @@ class NotificationsManager {
         'vendor': pushNotificationVendor,
       },
     );
+  }
+
+  void _navigateToWelcomeScreen() async {
+    navigatorKey.currentState
+        .pushNamedAndRemoveUntil(WelcomeScreen.id, (_) => false);
   }
 
   void configLocalNotification() async {
@@ -187,8 +175,8 @@ class NotificationsManager {
 
   void showNotification(message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        // Platform.isAndroid ? 'com.dabao_together' : 'com.duytq.flutterchatdemo',
-        'com.dabao_together',
+        // Platform.isAndroid ? 'com.dabaotogether' : 'com.duytq.flutterchatdemo',
+        'com.dabaotogether',
         'Dabao Together',
         'Dabao Together',
         playSound: true,
@@ -212,6 +200,10 @@ class NotificationsManager {
 //    await flutterLocalNotificationsPlugin.show(
 //        0, 'plain title', 'plain body', platformChannelSpecifics,
 //        payload: 'item x');
+  }
+
+  void removeAllNotificationsFromTray() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 
   void unregisterNotification() {
