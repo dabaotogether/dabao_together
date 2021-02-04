@@ -69,7 +69,14 @@ class _IntroScreenState extends State<IntroScreen> {
             image: _buildImage('dabao_together_new_logo.png'),
             title: "Last but not least",
             body:
-                "Please share this app in your community and do email us for any feedback. Thank you!",
+                "Please share this app in your community and do email us for any feedback. Stay safe and thank you!",
+            decoration: pageDecoration,
+          ),
+          PageViewModel(
+            image: _buildImage('dabao_together_new_logo.png'),
+            title: "Psst....",
+            body:
+                "We just want to assure you that this app doesn't track your location and your data will not be useful for any investigation (unlike T****Together app).",
             decoration: pageDecoration,
           ),
         ],

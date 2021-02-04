@@ -139,12 +139,18 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
     String address = '';
     String geox = '';
     String geoy = '';
+    String username = '';
+    if (_auth != null) {
+      if (_auth.currentUser.displayName != null) {
+        username = _auth.currentUser.displayName;
+      }
+    }
 
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(title: Text('Find Kakis')),
         drawer: AppDrawer(
-          username: _auth == null ? 'Error' : _auth.currentUser.displayName,
+          username: username,
           selectedIndex: 1,
         ),
         // bottomNavigationBar: BottomNavigationBar(

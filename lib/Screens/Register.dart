@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
+import 'Enter_Username.dart';
+
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
   @override
@@ -78,8 +80,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       _auth
                           .signInWithCredential(authCredential)
                           .then((UserCredential result) {
-                        print('verification completed');
-                        Navigator.pushNamed(context, HomeNavScreen.id);
+                        if (result.user.displayName == null) {
+                          Navigator.pushNamed(context, EnterUserName.id);
+                        } else {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, HomeNavScreen.id, (_) => false);
+                        }
+                        Flushbar(
+                          title: "Hey!",
+                          message:
+                              "Your phone number has been auto verified and you can proceed.",
+                          duration: Duration(seconds: 2),
+                        )..show(context);
+                        // Navigator.pushNamed(context, HomeNavScreen.id);
                       }).catchError((e) {
                         Flushbar(
                           title: "Hey",

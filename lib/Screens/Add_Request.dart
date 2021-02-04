@@ -258,7 +258,8 @@ class _AddRequestState extends State<AddRequest> {
                       //fillColor: Colors.green
                     ),
                     validator: (val) {
-                      if (addressController.text.length == 0) {
+                      if (addressController.text.length == 0 ||
+                          val.length != 6) {
                         return "Please enter a valid Singapore 6-digit postal code";
                       } else {
                         return null;
@@ -293,6 +294,8 @@ class _AddRequestState extends State<AddRequest> {
                           print(
                               'Request failed with status: ${response.statusCode}.');
                         }
+                      } else {
+                        addressController.text = '';
                       }
                     },
                     onSaved: (value) {

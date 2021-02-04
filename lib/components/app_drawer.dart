@@ -26,14 +26,31 @@ class AppDrawer extends StatefulWidget {
 
 class _AppDrawerState extends State<AppDrawer> {
   final _auth = FirebaseAuth.instance;
+  Stream<DocumentSnapshot> notificationStream;
   String userId = '';
   @override
   void initState() {
+    notificationStream = newStream();
     super.initState();
     if (_auth.currentUser != null) {
       userId = _auth.currentUser.uid;
     }
     _setToggleNotification();
+  }
+
+  Stream<DocumentSnapshot> newStream() {
+    Stream<DocumentSnapshot> doc;
+    try {
+      doc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser.uid)
+          .snapshots();
+    } catch (e) {
+      print(e);
+      return null;
+    }
+
+    return doc;
   }
 
   void _setToggleNotification() async {
@@ -204,16 +221,13 @@ class _AppDrawerState extends State<AppDrawer> {
                           style: TextStyle(color: Colors.white),
                         ),
                         trailing: StreamBuilder(
-                          stream: FirebaseAuth.instance.currentUser != null
-                              ? FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(FirebaseAuth.instance.currentUser.uid)
-                                  .snapshots()
-                              : null,
+                          stream: notificationStream,
                           initialData: null,
                           builder: (ctx, snap) {
                             return Switch(
-                              value: snap.data == null
+                              value: (snap.data == null ||
+                                      snap.hasError == true ||
+                                      snap.hasData == false)
                                   ? false
                                   : snap.data["notification_enabled"],
                               onChanged: (value) {

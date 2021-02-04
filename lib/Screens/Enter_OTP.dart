@@ -281,6 +281,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
         // Save newToken
         updateToken(newToken);
       });
+
       if (result.user.displayName == null) {
         Navigator.pushNamed(context, EnterUserName.id);
       } else {
