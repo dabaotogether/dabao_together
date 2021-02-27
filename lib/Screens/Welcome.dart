@@ -1,6 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
-import 'package:dabao_together/components/NotificationsManager.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
@@ -50,7 +49,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Scaffold(
       backgroundColor: animation.value,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
+        padding: EdgeInsets.symmetric(horizontal: 15.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -97,6 +96,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                         message:
                             "Your account $phoneNumber has been disabled. Please contact us at heyoz@dabaotogether.com. Thank you.",
                         duration: Duration(seconds: 2),
+                      )..show(context);
+                    } else {
+                      Flushbar(
+                        title: "Hey",
+                        message:
+                            "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+                        duration: Duration(seconds: 3),
                       )..show(context);
                     }
                   });

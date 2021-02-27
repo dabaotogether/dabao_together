@@ -37,7 +37,7 @@ class ContactUsScreen extends StatelessWidget {
                 child: SelectableText.rich(
                   TextSpan(
                       text:
-                          'If you have any enquries/feedback, please feel free to drop an email to heyoz@dabaotogether.com or drop by our Dabao Together Facebook page to talk to us. (Do not send us pigeon mail as our windows are usually close. Real windows, not Microsoft.)',
+                          'If you encountered any issues with the app, do try to restart the app or logout and login again. For any enquiries/feedback, please feel free to drop an email to heyoz@dabaotogether.com or drop by our Dabao Together Facebook page to talk to us. (Do not send us pigeon mail as our windows are usually close. Real windows, not Microsoft.)',
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 20,

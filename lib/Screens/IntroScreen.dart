@@ -74,9 +74,9 @@ class _IntroScreenState extends State<IntroScreen> {
           ),
           PageViewModel(
             image: _buildImage('dabao_together_new_logo.png'),
-            title: "Psst....",
+            title: "Psst...",
             body:
-                "We just want to assure you that this app doesn't track your location and your data will not be useful for any investigation (unlike T****Together app).",
+                "We also want to assure you that this app doesn't track your location and your data will not be useful for any investigation (unlike T****Together app). :p",
             decoration: pageDecoration,
           ),
         ],

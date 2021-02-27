@@ -224,36 +224,55 @@ class _AppDrawerState extends State<AppDrawer> {
                           stream: notificationStream,
                           initialData: null,
                           builder: (ctx, snap) {
-                            return Switch(
-                              value: (snap.data == null ||
-                                      snap.hasError == true ||
-                                      snap.hasData == false)
-                                  ? false
-                                  : snap.data["notification_enabled"],
-                              onChanged: (value) {
-                                FirebaseFirestore.instance
-                                    .runTransaction((transaction) async {
-                                  DocumentSnapshot freshSnap = await transaction
-                                      .get(FirebaseFirestore.instance
-                                          .collection('users')
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser.uid));
-                                  await transaction.update(freshSnap.reference,
-                                      {"notification_enabled": value});
-                                  if (!value) {
-                                    Flushbar(
-                                      title: "Heyo",
-                                      message:
-                                          "As the notification is turned off, do check the in-app messages regularly or indicate your phone number in the post.",
-                                      duration: Duration(seconds: 3),
-                                    )..show(context);
-                                  }
-                                });
-                              },
-                              inactiveTrackColor: Colors.redAccent,
-                              activeTrackColor: Colors.greenAccent,
-                              activeColor: Colors.white,
-                            );
+                            try {
+                              return Switch(
+                                value: (snap.data == null ||
+                                        snap.hasError == true ||
+                                        snap.hasData == false)
+                                    ? true
+                                    : snap.data["notification_enabled"],
+                                onChanged: (value) {
+                                  FirebaseFirestore.instance
+                                      .runTransaction((transaction) async {
+                                    DocumentSnapshot freshSnap =
+                                        await transaction.get(FirebaseFirestore
+                                            .instance
+                                            .collection('users')
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser.uid));
+                                    await transaction.update(
+                                        freshSnap.reference,
+                                        {"notification_enabled": value});
+                                    if (!value) {
+                                      Flushbar(
+                                        title: "Heyo",
+                                        message:
+                                            "As the notification is turned off, do check the in-app messages regularly or indicate your phone number in the post.",
+                                        duration: Duration(seconds: 3),
+                                      )..show(context);
+                                    }
+                                  });
+                                },
+                                inactiveTrackColor: Colors.redAccent,
+                                activeTrackColor: Colors.greenAccent,
+                                activeColor: Colors.white,
+                              );
+                            } catch (e) {
+                              print(e);
+                              Flushbar(
+                                title: "Hey",
+                                message:
+                                    "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+                                duration: Duration(seconds: 3),
+                              )..show(context);
+                              return Switch(
+                                value: true,
+                                onChanged: (value) {},
+                                inactiveTrackColor: Colors.redAccent,
+                                activeTrackColor: Colors.greenAccent,
+                                activeColor: Colors.white,
+                              );
+                            }
                           },
                         ),
                         onTap: () {
@@ -278,25 +297,35 @@ class _AppDrawerState extends State<AppDrawer> {
                           borderSide:
                               BorderSide(color: Colors.white, width: 2.0),
                           onPressed: () async {
-                            await firestoreInstance
-                                .collection("users")
-                                .doc(userId)
-                                .update({
-                              "signed_in": false,
-                            }).then((_) {
-                              print('saving to firestore done!');
-                            });
-                            await _auth.signOut().whenComplete(() {
-                              //print NotificationsManager newManager =
-                              //     NotificationsManager(context);
-                              // newManager.unregisterNotification();
+                            try {
+                              await firestoreInstance
+                                  .collection("users")
+                                  .doc(userId)
+                                  .update({
+                                "signed_in": false,
+                              }).then((_) {
+                                print('saving to firestore done!');
+                              });
+                              await _auth.signOut().whenComplete(() {
+                                //print NotificationsManager newManager =
+                                //     NotificationsManager(context);
+                                // newManager.unregisterNotification();
 
-                              NotificationsManager newManager =
-                                  NotificationsManager(context);
-                              newManager.removeAllNotificationsFromTray();
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, WelcomeScreen.id, (_) => false);
-                            });
+                                NotificationsManager newManager =
+                                    NotificationsManager(context);
+                                newManager.removeAllNotificationsFromTray();
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, WelcomeScreen.id, (_) => false);
+                              });
+                            } catch (e) {
+                              print(e);
+                              Flushbar(
+                                title: "Hey",
+                                message:
+                                    "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+                                duration: Duration(seconds: 3),
+                              )..show(context);
+                            }
                           },
                           textColor: Colors.black87,
                           shape: RoundedRectangleBorder(

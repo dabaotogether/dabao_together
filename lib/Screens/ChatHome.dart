@@ -4,6 +4,7 @@ import 'package:dabao_together/Screens/ChatScreen.dart';
 import 'package:dabao_together/components/app_drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -39,16 +40,41 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
   String pushNotificationId;
   String pushNotificationUsername;
   String pushNotificationVendor;
+  Stream<QuerySnapshot> requestStream;
   @override
   void initState() {
     super.initState();
-
+    requestStream = newStream();
     getCurrentUser();
     // NotificationsManager newManager = NotificationsManager(context);
     // newManager.configLocalNotification();
     // newManager.registerNotification();
     // registerNotification();
     // configLocalNotification();
+  }
+
+  Stream<QuerySnapshot> newStream() {
+    try {
+      Stream<QuerySnapshot> doc = firestoreInstance
+          .collection('users')
+          .doc(currentUserId)
+          .collection('active_chat')
+          .where('deleted', isEqualTo: 0)
+          .limit(15)
+          .orderBy('created_time', descending: true)
+          // .limit(2)
+          .snapshots();
+      return doc;
+    } catch (e) {
+      print(e);
+      Flushbar(
+        title: "Hey",
+        message:
+            "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+        duration: Duration(seconds: 3),
+      )..show(context);
+      return null;
+    }
   }
 
   void getCurrentUser() async {

@@ -35,14 +35,13 @@ dependencies:
   firebase_analytics: ^5.0.2
   pin_code_fields: ^5.1.0
   flare_flutter: ^2.0.5
-  flutter_localizations:
-    sdk: flutter
-  intl: ^0.17.0
+
+  intl: ^0.16.1
   http: ^0.12.2
   geoflutterfire: ^2.2.1
   firebase_storage: ^5.0.0
   fluttertoast: ^7.1.1
-  image_picker: ^0.6.7+12
+  image_picker: ^0.6.7+22
   cached_network_image: ^2.3.3
   photo_view: ^0.10.2
   firebase_messaging: ^7.0.3

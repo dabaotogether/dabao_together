@@ -27,6 +27,7 @@ class GoogleMapScreenState extends State<GoogleMapScreen> {
       position: LatLng(lat, lon),
       markerId: MarkerId('0'),
     ));
+
     return new Scaffold(
       appBar: AppBar(title: Text('Your Kaki\'s location')),
       body: GoogleMap(

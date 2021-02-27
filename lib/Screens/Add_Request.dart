@@ -271,28 +271,39 @@ class _AddRequestState extends State<AddRequest> {
                         var url =
                             'https://developers.onemap.sg/commonapi/search?searchVal=$postalCode&returnGeom=Y&getAddrDetails=Y&pageNum=1';
 
-                        // Await the http get response, then decode the json-formatted response.
-                        var response = await http.get(url);
-                        //TODO to do a pop up for user to choose if there are more than 1 result?
-                        if (response.statusCode == 200) {
-                          var jsonResponse = convert.jsonDecode(response.body);
-                          var result = jsonResponse['found'];
-                          int resultCount = int.parse(result.toString());
-                          if (resultCount != 0) {
-                            var blkNo = jsonResponse['results'][0]['BLK_NO'];
-                            var roadName =
-                                jsonResponse['results'][0]['ROAD_NAME'];
-                            geoy = jsonResponse['results'][0]['LATITUDE'];
-                            geox = jsonResponse['results'][0]['LONGITUDE'];
-                            // address = blkNo.toString() + ' ' + roadName.toString();
-                            addressController.text =
-                                blkNo.toString() + ' ' + roadName.toString();
+                        try {
+                          // Await the http get response, then decode the json-formatted response.
+                          var response = await http.get(url);
+                          //TODO to do a pop up for user to choose if there are more than 1 result?
+                          if (response.statusCode == 200) {
+                            var jsonResponse =
+                                convert.jsonDecode(response.body);
+                            var result = jsonResponse['found'];
+                            int resultCount = int.parse(result.toString());
+                            if (resultCount != 0) {
+                              var blkNo = jsonResponse['results'][0]['BLK_NO'];
+                              var roadName =
+                                  jsonResponse['results'][0]['ROAD_NAME'];
+                              geoy = jsonResponse['results'][0]['LATITUDE'];
+                              geox = jsonResponse['results'][0]['LONGITUDE'];
+                              // address = blkNo.toString() + ' ' + roadName.toString();
+                              addressController.text =
+                                  blkNo.toString() + ' ' + roadName.toString();
+                            } else {
+                              addressController.text = '';
+                            }
                           } else {
-                            addressController.text = '';
+                            print(
+                                'Request failed with status: ${response.statusCode}.');
                           }
-                        } else {
-                          print(
-                              'Request failed with status: ${response.statusCode}.');
+                        } catch (e) {
+                          print(e);
+                          Flushbar(
+                            title: "Hey",
+                            message:
+                                "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+                            duration: Duration(seconds: 3),
+                          )..show(context);
                         }
                       } else {
                         addressController.text = '';
@@ -349,7 +360,7 @@ class _AddRequestState extends State<AddRequest> {
                         ChoiceChip(
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           label: Text(
-                            'To split',
+                            'To share',
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -561,7 +572,7 @@ class _AddRequestState extends State<AddRequest> {
                         Icons.info_outline_rounded,
                         size: 40,
                       ),
-                      labelText: "Remarks",
+                      labelText: "Note",
                       hintText: "e.g. more info: type of food, contact number",
 
                       border: new OutlineInputBorder(
@@ -600,35 +611,43 @@ class _AddRequestState extends State<AddRequest> {
                             GeoFirePoint location = geo.point(
                                 latitude: double.parse(geoy),
                                 longitude: double.parse(geox));
-
-                            firestoreInstance.collection("requests").add({
-                              "username": _auth.currentUser.displayName,
-                              "user_id": _auth.currentUser.uid,
-                              "date_time": selectedDateTime,
-                              "vendor": shopName,
-                              "type_of_food": _foodTypeSelected,
-                              "postal_code": postalCode,
-                              "address": address,
-                              "geo_x": geox,
-                              "geo_y": geoy,
-                              "geo_point": location.data,
-                              "fees": deliveryFeeChoiceChipValue,
-                              "platform": platformChoiceChipValue,
-                              "created_time": FieldValue.serverTimestamp(),
-                              "expired": 0,
-                              "remarks": remarks,
-                            }).then((_) {
+                            try {
+                              firestoreInstance.collection("requests").add({
+                                "username": _auth.currentUser.displayName,
+                                "user_id": _auth.currentUser.uid,
+                                "date_time": selectedDateTime,
+                                "vendor": shopName,
+                                "type_of_food": _foodTypeSelected,
+                                "postal_code": postalCode,
+                                "address": address,
+                                "geo_x": geox,
+                                "geo_y": geoy,
+                                "geo_point": location.data,
+                                "fees": deliveryFeeChoiceChipValue,
+                                "platform": platformChoiceChipValue,
+                                "created_time": FieldValue.serverTimestamp(),
+                                "expired": 0,
+                                "remarks": remarks,
+                              }).then((_) {
+                                Flushbar(
+                                  title: "Hey " + _auth.currentUser.displayName,
+                                  message:
+                                      "Your jio has been posted! Sit back and wait for kakis.",
+                                  duration: Duration(seconds: 3),
+                                )..show(context);
+                                print('saving to firestore done!');
+                              });
+                              Navigator.pop(context);
+                            } catch (e) {
+                              print(e);
                               Flushbar(
-                                title: "Hey " + _auth.currentUser.displayName,
+                                title: "Hey",
                                 message:
-                                    "Your jio has been posted! Sit back and wait for kakis.",
+                                    "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
                                 duration: Duration(seconds: 3),
                               )..show(context);
-                              print('saving to firestore done!');
-                            });
+                            }
                           }
-
-                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -714,7 +733,7 @@ class _AddRequestState extends State<AddRequest> {
   }
 
   List<String> _feesOptions = [
-    'To split fee',
+    'To share fee',
     'On the house!',
   ];
   int _value = 1;

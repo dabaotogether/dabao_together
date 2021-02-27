@@ -373,7 +373,7 @@ class _EditRequestState extends State<EditRequest> {
                         ChoiceChip(
                           padding: EdgeInsets.symmetric(horizontal: 10),
                           label: Text(
-                            'To split',
+                            'To share',
                             style: TextStyle(
                               color: Colors.white,
                             ),
@@ -590,7 +590,7 @@ class _EditRequestState extends State<EditRequest> {
                         Icons.info_outline_rounded,
                         size: 40,
                       ),
-                      labelText: "Remarks",
+                      labelText: "Note",
                       hintText: "e.g. more info: type of food, contact number",
 
                       border: new OutlineInputBorder(
@@ -629,36 +629,45 @@ class _EditRequestState extends State<EditRequest> {
                                 latitude: double.parse(geoy),
                                 longitude: double.parse(geox));
 
-                            firestoreInstance
-                                .collection("requests")
-                                .doc(requestDoc.id)
-                                .update({
-                              "username": _auth.currentUser.displayName,
-                              "user_id": _auth.currentUser.uid,
-                              "date_time": selectedDateTime,
-                              "vendor": shopName,
-                              "type_of_food": foodTypeList,
-                              "postal_code": postalCode,
-                              "address": address,
-                              "geo_x": geox,
-                              "geo_y": geoy,
-                              "geo_point": location.data,
-                              "fees": deliveryFeeEditChoiceChipValue,
-                              "platform": platformEditChoiceChipValue,
-                              "created_time": FieldValue.serverTimestamp(),
-                              "expired": 0,
-                              "remarks": remarks,
-                            }).then((_) {
+                            try {
+                              firestoreInstance
+                                  .collection("requests")
+                                  .doc(requestDoc.id)
+                                  .update({
+                                "username": _auth.currentUser.displayName,
+                                "user_id": _auth.currentUser.uid,
+                                "date_time": selectedDateTime,
+                                "vendor": shopName,
+                                "type_of_food": foodTypeList,
+                                "postal_code": postalCode,
+                                "address": address,
+                                "geo_x": geox,
+                                "geo_y": geoy,
+                                "geo_point": location.data,
+                                "fees": deliveryFeeEditChoiceChipValue,
+                                "platform": platformEditChoiceChipValue,
+                                "created_time": FieldValue.serverTimestamp(),
+                                "expired": 0,
+                                "remarks": remarks,
+                              }).then((_) {
+                                Flushbar(
+                                  title: "Hey " + _auth.currentUser.displayName,
+                                  message: "Your jio has been updated!",
+                                  duration: Duration(seconds: 3),
+                                )..show(context);
+                                print('update request to firestore done!');
+                              });
+                              Navigator.pop(context);
+                            } catch (e) {
+                              print(e);
                               Flushbar(
-                                title: "Hey " + _auth.currentUser.displayName,
-                                message: "Your jio has been updated!",
+                                title: "Hey",
+                                message:
+                                    "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
                                 duration: Duration(seconds: 3),
                               )..show(context);
-                              print('update request to firestore done!');
-                            });
+                            }
                           }
-
-                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -680,19 +689,28 @@ class _EditRequestState extends State<EditRequest> {
                         title: 'Delete',
                         colour: Colors.black87,
                         onPressed: () {
-                          //TODO popup alert to confirm action
-                          FirebaseFirestore.instance
-                              .collection("requests")
-                              .doc(requestDoc.id)
-                              .update(<String, dynamic>{'expired': 1}).then(
-                                  (value) {
+                          try {
+                            FirebaseFirestore.instance
+                                .collection("requests")
+                                .doc(requestDoc.id)
+                                .update(<String, dynamic>{'expired': 1}).then(
+                                    (value) {
+                              Flushbar(
+                                title: "Hey " + _auth.currentUser.displayName,
+                                message: "Your jio has been deleted!",
+                                duration: Duration(seconds: 3),
+                              )..show(context);
+                            });
+                            Navigator.pop(context);
+                          } catch (e) {
+                            print(e);
                             Flushbar(
-                              title: "Hey " + _auth.currentUser.displayName,
-                              message: "Your jio has been deleted!",
+                              title: "Hey",
+                              message:
+                                  "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
                               duration: Duration(seconds: 3),
                             )..show(context);
-                          });
-                          Navigator.pop(context);
+                          }
                         },
                       ),
                     ),
@@ -766,7 +784,7 @@ class _EditRequestState extends State<EditRequest> {
   }
 
   List<String> _feesOptions = [
-    'To split fee',
+    'To share fee',
     'On the house!',
   ];
   int _value = 1;

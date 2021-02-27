@@ -24,113 +24,118 @@ class _EnterUserNameState extends State<EnterUserName> {
   bool isChecked = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // resizeToAvoidBottomPadding: false,
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            SizedBox(height: 30),
-            Expanded(
-              child: Hero(
-                tag: 'logo',
-                child: Container(
-                  height: 250.0,
-                  child: Image.asset('images/dabao_together_logo_only.png'),
+    return SafeArea(
+      child: Scaffold(
+        // resizeToAvoidBottomPadding: false,
+        backgroundColor: Colors.white,
+        body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox(height: 30),
+              Expanded(
+                child: Hero(
+                  tag: 'logo',
+                  child: Container(
+                    height: 250.0,
+                    child: Image.asset('images/dabao_together_logo_only.png'),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 20.0,
-            ),
-            Text(
-              'Hi there! Glad to have you onboard!',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
+              SizedBox(
+                height: 10.0,
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            TextField(
-              textAlign: TextAlign.center,
-              decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Please enter your display user name'),
-              onChanged: (value) {
-                userName = value;
-              },
-            ),
-            RoundedButton(
-              title: 'Register',
-              colour: Colors.black87,
-              onPressed: () async {
-                if (isChecked) {
-                  if (userName.length > 2) {
-                    commitUsernameAndToken(userName);
+              Text(
+                'Hi there! Glad to have you onboard!',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              TextField(
+                textAlign: TextAlign.center,
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Please enter your display user name'),
+                onChanged: (value) {
+                  userName = value;
+                },
+              ),
+              RoundedButton(
+                title: 'Register',
+                colour: Colors.black87,
+                onPressed: () async {
+                  if (isChecked) {
+                    if (userName.length > 2) {
+                      commitUsernameAndToken(userName);
+                    } else {
+                      Flushbar(
+                        title: "Hey",
+                        message:
+                            "Please enter a display name which is at least 3 characters long.",
+                        duration: Duration(seconds: 1),
+                      )..show(context);
+                    }
                   } else {
                     Flushbar(
                       title: "Hey",
                       message:
-                          "Please enter a display name which is at least 3 characters long.",
+                          "Please read and agree to the terms & conditions and privacy policy! Thanks!",
                       duration: Duration(seconds: 1),
                     )..show(context);
                   }
-                } else {
-                  Flushbar(
-                    title: "Hey",
-                    message:
-                        "Please read and agree to the terms & conditions and privacy policy! Thanks!",
-                    duration: Duration(seconds: 1),
-                  )..show(context);
-                }
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Flexible(
-                  child: SizedBox(
-                    width: 50,
-                    child: Checkbox(
-                      // controlAffinity: ListTileControlAffinity.leading,
-                      value: isChecked,
-                      onChanged: (bool) {
-                        setState(() {
-                          isChecked = bool;
-                        });
-                      },
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: SizedBox(
+                        width: 50,
+                        child: Checkbox(
+                          // controlAffinity: ListTileControlAffinity.leading,
+                          value: isChecked,
+                          onChanged: (bool) {
+                            setState(() {
+                              isChecked = bool;
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: RichText(
-                    text: TextSpan(
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: 'I have read and agreed to the ',
-                            style: TextStyle(color: Colors.black87)),
-                        TextSpan(
-                            text: 'terms & conditions and privacy policy',
-                            style: TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.pushNamed(context, TncScreen.id);
-                              }),
-                      ],
+                    Expanded(
+                      flex: 3,
+                      child: RichText(
+                        text: TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'I have read and agreed to the ',
+                                style: TextStyle(color: Colors.black87)),
+                            TextSpan(
+                                text: 'terms & conditions and privacy policy',
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.pushNamed(context, TncScreen.id);
+                                  }),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

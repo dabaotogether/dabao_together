@@ -10,6 +10,7 @@ import 'package:dabao_together/Screens/GoogleMapScreen.dart';
 import 'package:dabao_together/components/app_drawer.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -94,14 +95,29 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
   }
 
   Stream<List<DocumentSnapshot>> newStream(GeoFirePoint newCenter) {
-    var queryRef =
-        firestoreInstance.collection('requests').where('expired', isEqualTo: 0);
-    // .where("date_time", isGreaterThan: new DateTime.now());
-    Stream<List<DocumentSnapshot>> doc = geo
-        .collection(collectionRef: queryRef)
-        .within(
-            center: newCenter, radius: 1, field: 'geo_point', strictMode: true);
-    return doc;
+    try {
+      var queryRef = firestoreInstance
+          .collection('requests')
+          .where('expired', isEqualTo: 0);
+      // .where("date_time", isGreaterThan: new DateTime.now());
+      Stream<List<DocumentSnapshot>> doc = geo
+          .collection(collectionRef: queryRef)
+          .within(
+              center: newCenter,
+              radius: 1,
+              field: 'geo_point',
+              strictMode: true);
+      return doc;
+    } catch (e) {
+      print(e);
+      Flushbar(
+        title: "Hey",
+        message:
+            "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+        duration: Duration(seconds: 3),
+      )..show(context);
+      return null;
+    }
   }
 
   void _isNewChatPeer(String user_id, String username, String requestorId,
@@ -235,37 +251,48 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                           var url =
                               'https://developers.onemap.sg/commonapi/search?searchVal=$postalCode&returnGeom=Y&getAddrDetails=Y&pageNum=1';
 
-                          // Await the http get response, then decode the json-formatted response.
-                          var response = await http.get(url);
-                          //TODO to do a pop up for user to choose if there are more than 1 result?
-                          if (response.statusCode == 200) {
-                            var jsonResponse =
-                                convert.jsonDecode(response.body);
-                            var result = jsonResponse['found'];
-                            int resultCount = int.parse(result.toString());
-                            if (resultCount != 0) {
-                              searchStarted = true;
-                              var blkNo = jsonResponse['results'][0]['BLK_NO'];
-                              var roadName =
-                                  jsonResponse['results'][0]['ROAD_NAME'];
-                              geoy = jsonResponse['results'][0]['LATITUDE'];
-                              geox = jsonResponse['results'][0]['LONGITUDE'];
+                          try {
+                            // Await the http get response, then decode the json-formatted response.
+                            var response = await http.get(url);
+                            //TODO to do a pop up for user to choose if there are more than 1 result?
+                            if (response.statusCode == 200) {
+                              var jsonResponse =
+                                  convert.jsonDecode(response.body);
+                              var result = jsonResponse['found'];
+                              int resultCount = int.parse(result.toString());
+                              if (resultCount != 0) {
+                                searchStarted = true;
+                                var blkNo =
+                                    jsonResponse['results'][0]['BLK_NO'];
+                                var roadName =
+                                    jsonResponse['results'][0]['ROAD_NAME'];
+                                geoy = jsonResponse['results'][0]['LATITUDE'];
+                                geox = jsonResponse['results'][0]['LONGITUDE'];
 
-                              center = geo.point(
-                                  latitude: double.parse(geoy),
-                                  longitude: double.parse(geox));
-                              setState(() {
-                                requestStream = newStream(center);
-                              });
-                              // address = blkNo.toString() + ' ' + roadName.toString();
-                              // addressController.text =
-                              //     blkNo.toString() + ' ' + roadName.toString();
+                                center = geo.point(
+                                    latitude: double.parse(geoy),
+                                    longitude: double.parse(geox));
+                                setState(() {
+                                  requestStream = newStream(center);
+                                });
+                                // address = blkNo.toString() + ' ' + roadName.toString();
+                                // addressController.text =
+                                //     blkNo.toString() + ' ' + roadName.toString();
+                              } else {
+                                postalCodeController.text = '';
+                              }
                             } else {
-                              postalCodeController.text = '';
+                              print(
+                                  'Request failed with status: ${response.statusCode}.');
                             }
-                          } else {
-                            print(
-                                'Request failed with status: ${response.statusCode}.');
+                          } catch (e) {
+                            print(e);
+                            Flushbar(
+                              title: "Hey",
+                              message:
+                                  "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+                              duration: Duration(seconds: 3),
+                            )..show(context);
                           }
                         }
 
@@ -286,6 +313,7 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
               builder: (context, snapshot) {
                 switch (snapshot.connectionState) {
                   case ConnectionState.none:
+
                   case ConnectionState.waiting:
                     return Center(
                       child: CircularProgressIndicator(
@@ -491,7 +519,7 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                         style: TextStyle(color: Colors.black87),
                                       ),
                                       Text(
-                                        'Split Delivery fee: ' +
+                                        'Share Delivery Fee: ' +
                                             shareDeliveryFee,
                                         style: TextStyle(color: Colors.black87),
                                       ),
@@ -502,7 +530,7 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                                         style: TextStyle(color: Colors.black87),
                                       ),
                                       Text(
-                                        'Remarks: ' + remarks,
+                                        'Note: ' + remarks,
                                         style: TextStyle(color: Colors.black87),
                                       ),
                                     ],
