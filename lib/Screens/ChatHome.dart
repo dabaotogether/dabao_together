@@ -96,7 +96,7 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
       appBar: AppBar(
         // automaticallyImplyLeading: false,
         title: Text(
-          'Chat History (Most recent 15)',
+          'Chat History (Recent 15)',
         ),
       ),
       drawer: AppDrawer(
