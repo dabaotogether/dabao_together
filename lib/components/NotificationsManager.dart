@@ -43,16 +43,22 @@ class NotificationsManager {
 
   void registerNotification() {
     getCurrentUser();
-    firebaseMessaging.requestNotificationPermissions();
+    firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
 
+    firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
+    });
     firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
       print('onMessage: $message');
       pushNotificationId = message['data']['idFrom'];
       pushNotificationUsername = message['data']['userFrom'];
       pushNotificationVendor = message['data']['vendor'];
-      Platform.isAndroid
-          ? showNotification(message['notification'])
-          : showNotification(message['aps']['alert']);
+      showNotification(message['notification']);
+      // Platform.isAndroid
+      //     ? showNotification(message['notification'])
+      //     : showNotification(message['aps']['alert']);
       return;
     }, onResume: (Map<String, dynamic> message) {
       print('onResume: $message');
@@ -75,7 +81,7 @@ class NotificationsManager {
 
     // firebaseMessaging.getToken().then((token) {
     //   FirebaseFirestore.instance
-    //       .collection('users')
+    //       .collection('usgers')
     //       .doc(currentUserId)
     //       .update({'pushToken': token});
     // }).catchError((err) {
