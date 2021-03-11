@@ -44,7 +44,8 @@ class NotificationsManager {
   void registerNotification() {
     getCurrentUser();
     firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(sound: true, badge: true, alert: true));
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: false));
 
     firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {
@@ -55,10 +56,10 @@ class NotificationsManager {
       pushNotificationId = message['data']['idFrom'];
       pushNotificationUsername = message['data']['userFrom'];
       pushNotificationVendor = message['data']['vendor'];
-      showNotification(message['notification']);
-      // Platform.isAndroid
-      //     ? showNotification(message['notification'])
-      //     : showNotification(message['aps']['alert']);
+      // showNotification(message['notification']);
+      Platform.isAndroid
+          ? showNotification(message['notification'])
+          : showNotification(message['aps']['alert']);
       return;
     }, onResume: (Map<String, dynamic> message) {
       print('onResume: $message');
