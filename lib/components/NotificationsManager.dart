@@ -53,13 +53,23 @@ class NotificationsManager {
     });
     firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
       print('onMessage: $message');
-      pushNotificationId = message['data']['idFrom'];
-      pushNotificationUsername = message['data']['userFrom'];
-      pushNotificationVendor = message['data']['vendor'];
-      // showNotification(message['notification']);
+
+      if (Platform.isIOS){
+pushNotificationId = message['idFrom'];
+        pushNotificationUsername = message['userFrom'];
+        pushNotificationVendor = message['vendor'];
+        }
+      else{
+        pushNotificationId = message['data']['idFrom'];
+        pushNotificationUsername = message['data']['userFrom'];
+        pushNotificationVendor = message['data']['vendor'];
+      }
+
+
       Platform.isAndroid
           ? showNotification(message['notification'])
-          : showNotification(message['aps']['alert']);
+          : showNotification(message['notification']);
+
       return;
     }, onResume: (Map<String, dynamic> message) {
       print('onResume: $message');
@@ -94,9 +104,16 @@ class NotificationsManager {
     // Navigator.popUntil(context, (Route<dynamic> route) => route is PageRoute);
     // await Navigator.of(context).push(PageRouteBuilder(
     //     opaque: false, pageBuilder: (context, _, __) => NewPage();
-    pushNotificationId = message['data']['idFrom'];
-    pushNotificationUsername = message['data']['userFrom'];
-    pushNotificationVendor = message['data']['vendor'];
+    if (Platform.isIOS){
+      pushNotificationId = message['idFrom'];
+      pushNotificationUsername = message['userFrom'];
+      pushNotificationVendor = message['vendor'];
+    }
+    else{
+      pushNotificationId = message['data']['idFrom'];
+      pushNotificationUsername = message['data']['userFrom'];
+      pushNotificationVendor = message['data']['vendor'];
+    }
     navigatorKey.currentState.pushNamed(
       Chat.id,
       arguments: <String, String>{
@@ -179,6 +196,7 @@ class NotificationsManager {
   }
 
   void showNotification(message) async {
+
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         // Platform.isAndroid ? 'com.dabaotogether' : 'com.duytq.flutterchatdemo',
         'com.dabaotogether',
