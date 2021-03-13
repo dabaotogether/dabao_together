@@ -7,6 +7,7 @@ import 'package:dabao_together/Screens/ChatScreen.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
 import 'package:dabao_together/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,7 @@ final firestoreInstance = FirebaseFirestore.instance;
 class NotificationsManager {
   BuildContext context;
   NotificationsManager(this.context);
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   String pushNotificationId;
@@ -41,54 +42,84 @@ class NotificationsManager {
     }
   }
 
+  Future<void> _firebaseMessagingBackgroundHandler(
+      RemoteMessage message) async {
+    // If you're going to use other Firebase services in the background, such as Firestore,
+    // make sure you call `initializeApp` before using other Firebase services.
+    await Firebase.initializeApp();
+    print('Handling a background message ${message.messageId}');
+  }
+
   void registerNotification() {
     getCurrentUser();
-    firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(
-            sound: true, badge: true, alert: true, provisional: false));
+    firebaseMessaging.requestPermission(
+        sound: true, badge: true, alert: true, provisional: false);
 
-    firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
-    });
-    firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
-      print('onMessage: $message');
-
-      if (Platform.isIOS){
-pushNotificationId = message['idFrom'];
-        pushNotificationUsername = message['userFrom'];
-        pushNotificationVendor = message['vendor'];
-        }
-      else{
-        pushNotificationId = message['data']['idFrom'];
-        pushNotificationUsername = message['data']['userFrom'];
-        pushNotificationVendor = message['data']['vendor'];
+    print(firebaseMessaging.getNotificationSettings());
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (Platform.isIOS) {
+        pushNotificationId = message.data['idFrom'];
+        pushNotificationUsername = message.data['userFrom'];
+        pushNotificationVendor = message.data['vendor'];
+      } else {
+        pushNotificationId = message.data['idFrom'];
+        pushNotificationUsername = message.data['userFrom'];
+        pushNotificationVendor = message.data['vendor'];
       }
-
 
       Platform.isAndroid
-          ? showNotification(message['notification'])
-          : showNotification(message['notification']);
-
-      return;
-    }, onResume: (Map<String, dynamic> message) {
-      print('onResume: $message');
-      if (_auth.currentUser != null) {
-        _navigateToChatScreen(message);
-      } else {
-        _navigateToWelcomeScreen();
-      }
-      return;
-    }, onLaunch: (Map<String, dynamic> message) {
-      print('onLaunch: $message');
-      if (_auth.currentUser != null) {
-        _navigateToChatScreen(message);
-      } else {
-        _navigateToWelcomeScreen();
-      }
-
-      return;
+          ? showNotification(message)
+          : showNotification(message);
     });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+
+      if (_auth.currentUser != null) {
+        _navigateToChatScreen(message);
+      } else {
+        _navigateToWelcomeScreen();
+      }
+    });
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // firebaseMessaging.firebaseMessaging.configure(
+    //     onMessage: (Map<String, dynamic> message) {
+    //   print('onMessage: $message');
+    //
+    //   if (Platform.isIOS) {
+    //     pushNotificationId = message['idFrom'];
+    //     pushNotificationUsername = message['userFrom'];
+    //     pushNotificationVendor = message['vendor'];
+    //   } else {
+    //     pushNotificationId = message['data']['idFrom'];
+    //     pushNotificationUsername = message['data']['userFrom'];
+    //     pushNotificationVendor = message['data']['vendor'];
+    //   }
+    //
+    //   Platform.isAndroid
+    //       ? showNotification(message['notification'])
+    //       : showNotification(message['notification']);
+    //
+    //   return;
+    // }, onResume: (Map<String, dynamic> message) {
+    //   print('onResume: $message');
+    //   if (_auth.currentUser != null) {
+    //     _navigateToChatScreen(message);
+    //   } else {
+    //     _navigateToWelcomeScreen();
+    //   }
+    //   return;
+    // }, onLaunch: (Map<String, dynamic> message) {
+    //   print('onLaunch: $message');
+    //   if (_auth.currentUser != null) {
+    //     _navigateToChatScreen(message);
+    //   } else {
+    //     _navigateToWelcomeScreen();
+    //   }
+    //
+    //   return;
+    // });
 
     // firebaseMessaging.getToken().then((token) {
     //   FirebaseFirestore.instance
@@ -100,19 +131,18 @@ pushNotificationId = message['idFrom'];
     // });
   }
 
-  void _navigateToChatScreen(Map<String, dynamic> message) async {
+  void _navigateToChatScreen(RemoteMessage message) async {
     // Navigator.popUntil(context, (Route<dynamic> route) => route is PageRoute);
     // await Navigator.of(context).push(PageRouteBuilder(
     //     opaque: false, pageBuilder: (context, _, __) => NewPage();
-    if (Platform.isIOS){
-      pushNotificationId = message['idFrom'];
-      pushNotificationUsername = message['userFrom'];
-      pushNotificationVendor = message['vendor'];
-    }
-    else{
-      pushNotificationId = message['data']['idFrom'];
-      pushNotificationUsername = message['data']['userFrom'];
-      pushNotificationVendor = message['data']['vendor'];
+    if (Platform.isIOS) {
+      pushNotificationId = message.data['idFrom'];
+      pushNotificationUsername = message.data['userFrom'];
+      pushNotificationVendor = message.data['vendor'];
+    } else {
+      pushNotificationId = message.data['idFrom'];
+      pushNotificationUsername = message.data['userFrom'];
+      pushNotificationVendor = message.data['vendor'];
     }
     navigatorKey.currentState.pushNamed(
       Chat.id,
@@ -195,8 +225,7 @@ pushNotificationId = message['idFrom'];
     // );
   }
 
-  void showNotification(message) async {
-
+  void showNotification(RemoteMessage message) async {
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         // Platform.isAndroid ? 'com.dabaotogether' : 'com.duytq.flutterchatdemo',
         'com.dabaotogether',
@@ -212,13 +241,16 @@ pushNotificationId = message['idFrom'];
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 
-    print(message);
+    print(message.data);
 //    print(message['body'].toString());
 //    print(json.encode(message));
 
-    await flutterLocalNotificationsPlugin.show(0, message['title'].toString(),
-        message['body'].toString(), platformChannelSpecifics,
-        payload: json.encode(message));
+    await flutterLocalNotificationsPlugin.show(
+        0,
+        message.data['title'].toString(),
+        message.data['body'].toString(),
+        platformChannelSpecifics,
+        payload: json.encode(message.data));
 
 //    await flutterLocalNotificationsPlugin.show(
 //        0, 'plain title', 'plain body', platformChannelSpecifics,
@@ -227,21 +259,6 @@ pushNotificationId = message['idFrom'];
 
   void removeAllNotificationsFromTray() async {
     await flutterLocalNotificationsPlugin.cancelAll();
-  }
-
-  void unregisterNotification() {
-    // firebaseMessaging.requestNotificationPermissions();
-
-    firebaseMessaging.configure(onMessage: (Map<String, dynamic> message) {
-      print('onMessage: $message');
-      return;
-    }, onResume: (Map<String, dynamic> message) {
-      print('onResume: $message');
-      return;
-    }, onLaunch: (Map<String, dynamic> message) {
-      print('onLaunch: $message');
-      return;
-    });
   }
 
   Future<bool> onBackPress() {

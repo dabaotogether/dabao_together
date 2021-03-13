@@ -620,12 +620,12 @@ class ChatScreenState extends State<ChatScreen> {
                           valueColor:
                               AlwaysStoppedAnimation<Color>(themeColor)));
                 } else {
-                  listMessage.addAll(snapshot.data.documents);
+                  listMessage.addAll(snapshot.data.docs);
                   return ListView.builder(
                     padding: EdgeInsets.all(10.0),
                     itemBuilder: (context, index) =>
-                        buildItem(index, snapshot.data.documents[index]),
-                    itemCount: snapshot.data.documents.length,
+                        buildItem(index, snapshot.data.docs[index]),
+                    itemCount: snapshot.data.docs.length,
                     reverse: true,
                     controller: listScrollController,
                   );

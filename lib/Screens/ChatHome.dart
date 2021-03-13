@@ -30,7 +30,7 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
   ChatHomeScreenState({Key key});
 
   // final String currentUserId;
-  final FirebaseMessaging firebaseMessaging = FirebaseMessaging();
+  final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   String currentUserId;
@@ -170,8 +170,8 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
                     //     buildItem(context, snapshot.data.documents[index]),
                     // itemCount: snapshot.data.documents.length,
                     itemBuilder: (context, index) =>
-                        buildItem(context, snapshot.data.documents[index]),
-                    itemCount: snapshot.data.documents.length,
+                        buildItem(context, snapshot.data.docs[index]),
+                    itemCount: snapshot.data.docs.length,
                   );
                 }
               },
