@@ -80,6 +80,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               colour: Colors.black87,
               onPressed: () {
                 if (_auth.currentUser != null) {
+                  String requestorName = '';
+                  String requestorId = '';
+                  String requestVendor = '';
+
                   String phoneNumber = _auth.currentUser.phoneNumber;
                   _auth.currentUser.reload().then((value) {
                     if (_auth.currentUser.displayName != null) {

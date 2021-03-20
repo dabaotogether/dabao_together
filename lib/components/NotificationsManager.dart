@@ -7,7 +7,6 @@ import 'package:dabao_together/Screens/ChatScreen.dart';
 import 'package:dabao_together/Screens/Welcome.dart';
 import 'package:dabao_together/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -42,15 +41,15 @@ class NotificationsManager {
     }
   }
 
-  Future<void> _firebaseMessagingBackgroundHandler(
-      RemoteMessage message) async {
-    // If you're going to use other Firebase services in the background, such as Firestore,
-    // make sure you call `initializeApp` before using other Firebase services.
-    await Firebase.initializeApp();
-    print('Handling a background message ${message.messageId}');
-  }
+  // Future<void> _firebaseMessagingBackgroundHandler(
+  //     RemoteMessage message) async {
+  //   // If you're going to use other Firebase services in the background, such as Firestore,
+  //   // make sure you call `initializeApp` before using other Firebase services.
+  //   await Firebase.initializeApp();
+  //   print('Handling a background message ${message.messageId}');
+  // }
 
-  void registerNotification() {
+  void registerNotification() async {
     getCurrentUser();
     firebaseMessaging.requestPermission(
         sound: true, badge: true, alert: true, provisional: false);
@@ -73,6 +72,18 @@ class NotificationsManager {
           ? showNotification(message)
           : showNotification(message);
     });
+    RemoteMessage initialMessage =
+        await FirebaseMessaging.instance.getInitialMessage();
+    if (initialMessage != null) {
+      if (initialMessage.data['idFrom'].toString().length > 0) {
+        if (_auth.currentUser != null) {
+          _navigateToChatScreen(initialMessage);
+        } else {
+          _navigateToWelcomeScreen();
+        }
+      }
+    }
+
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
 
@@ -82,7 +93,7 @@ class NotificationsManager {
         _navigateToWelcomeScreen();
       }
     });
-    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // firebaseMessaging.firebaseMessaging.configure(
     //     onMessage: (Map<String, dynamic> message) {
     //   print('onMessage: $message');

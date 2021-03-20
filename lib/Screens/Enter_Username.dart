@@ -4,6 +4,7 @@ import 'package:dabao_together/Screens/TncScreen.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:dabao_together/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -190,7 +191,10 @@ class _EnterUserNameState extends State<EnterUserName> {
       await user.updateProfile(displayName: userName);
       await user.reload();
       user = _auth.currentUser;
-
+      FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+      await _firebaseMessaging.getToken().then((token) {
+        tokenId = token;
+      });
       firestoreInstance.collection("users").doc(user.uid).set({
         "username": user.displayName,
         "user_id": user.uid,

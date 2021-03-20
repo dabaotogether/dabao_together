@@ -6,6 +6,7 @@ import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/Screens/Main.dart';
 import 'package:dabao_together/Screens/Who_Are_We.dart';
 import 'package:dabao_together/components/NotificationsManager.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,9 +22,12 @@ import 'Screens/Register.dart';
 import 'Screens/TncScreen.dart';
 import 'Screens/Welcome.dart';
 
+final _auth = FirebaseAuth.instance;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -42,6 +46,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     NotificationsManager newManager = NotificationsManager(context);
     newManager.configLocalNotification();
     newManager.registerNotification();
