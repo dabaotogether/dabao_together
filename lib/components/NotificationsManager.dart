@@ -54,7 +54,6 @@ class NotificationsManager {
     firebaseMessaging.requestPermission(
         sound: true, badge: true, alert: true, provisional: false);
 
-    print(firebaseMessaging.getNotificationSettings());
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;

@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dabao_together/Screens/Enter_OTP.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:dabao_together/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 
 import 'Enter_Username.dart';
+
+final firestoreInstance = FirebaseFirestore.instance;
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -80,9 +84,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       _auth
                           .signInWithCredential(authCredential)
                           .then((UserCredential result) {
+                        FirebaseMessaging _firebaseMessaging =
+                            FirebaseMessaging.instance;
+                        _firebaseMessaging.getToken().then((token) {
+                          updateToken(token);
+                        });
+                        _firebaseMessaging.onTokenRefresh.listen((newToken) {
+                          // Save newToken
+                          updateToken(newToken);
+                        });
                         if (result.user.displayName == null) {
                           Navigator.pushNamed(context, EnterUserName.id);
                         } else {
+                          updateSignedInField();
                           Navigator.pushNamedAndRemoveUntil(
                               context, HomeNavScreen.id, (_) => false);
                         }
@@ -141,5 +155,44 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ),
       ),
     );
+  }
+
+  void updateSignedInField() async {
+    try {
+      User user = _auth.currentUser;
+      firestoreInstance.collection("users").doc(user.uid).get().then((doc) {
+        if (doc.exists) {
+          firestoreInstance.collection("users").doc(user.uid).update({
+            "signed_in": true,
+          }).then((_) {
+            print('saving to firestore done!');
+          });
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void updateToken(String newTokenId) async {
+    try {
+      User user = _auth.currentUser;
+      firestoreInstance.collection("users").doc(user.uid).get().then((doc) {
+        if (doc.exists) {
+          firestoreInstance.collection("users").doc(user.uid).update({
+            "token_id": newTokenId,
+            // "signed_in": true,
+          }).then((_) {
+            print('saving to firestore done!');
+          });
+        }
+      });
+
+      if (user.displayName != null)
+        Navigator.pushNamedAndRemoveUntil(
+            context, HomeNavScreen.id, (_) => false);
+    } catch (e) {
+      print(e);
+    }
   }
 }

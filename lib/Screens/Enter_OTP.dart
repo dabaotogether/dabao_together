@@ -277,7 +277,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
       _firebaseMessaging.getToken().then((token) {
         updateToken(token);
       });
-      FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
+      _firebaseMessaging.onTokenRefresh.listen((newToken) {
         // Save newToken
         updateToken(newToken);
       });
@@ -285,6 +285,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
       if (result.user.displayName == null) {
         Navigator.pushNamed(context, EnterUserName.id);
       } else {
+        updateSignedInField();
         Navigator.pushNamedAndRemoveUntil(
             context, HomeNavScreen.id, (_) => false);
       }
@@ -306,6 +307,23 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
     });
   }
 
+  void updateSignedInField() async {
+    try {
+      User user = _auth.currentUser;
+      firestoreInstance.collection("users").doc(user.uid).get().then((doc) {
+        if (doc.exists) {
+          firestoreInstance.collection("users").doc(user.uid).update({
+            "signed_in": true,
+          }).then((_) {
+            print('saving to firestore done!');
+          });
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   void updateToken(String newTokenId) async {
     try {
       User user = _auth.currentUser;
@@ -313,7 +331,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
         if (doc.exists) {
           firestoreInstance.collection("users").doc(user.uid).update({
             "token_id": newTokenId,
-            "signed_in": true,
+            // "signed_in": true,
           }).then((_) {
             print('saving to firestore done!');
           });
