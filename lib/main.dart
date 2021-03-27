@@ -42,7 +42,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -50,7 +50,21 @@ class _MyAppState extends State<MyApp> {
     NotificationsManager newManager = NotificationsManager(context);
     newManager.configLocalNotification();
     newManager.registerNotification();
+    // WidgetsBinding.instance.addObserver(this);
   }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     FlutterAppBadger.removeBadge();
+  //   }
+  // }
+  //
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance.removeObserver(this);
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {

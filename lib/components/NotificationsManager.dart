@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 final _auth = FirebaseAuth.instance;
@@ -210,6 +211,7 @@ class NotificationsManager {
   }
 
   Future selectNotification(String payload) async {
+    FlutterAppBadger.removeBadge();
     if (payload != null) {
       if (pushNotificationId != null) {
         if (_auth.currentUser != null) {
