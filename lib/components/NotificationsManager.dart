@@ -76,6 +76,7 @@ class NotificationsManager {
         await FirebaseMessaging.instance.getInitialMessage();
     if (initialMessage != null) {
       if (initialMessage.data['idFrom'].toString().length > 0) {
+        FlutterAppBadger.removeBadge();
         if (_auth.currentUser != null) {
           _navigateToChatScreen(initialMessage);
         } else {
@@ -173,9 +174,9 @@ class NotificationsManager {
   void configLocalNotification() async {
     var initializationSettingsAndroid =
         new AndroidInitializationSettings('app_icon');
-    // var initializationSettingsIOS = IOSInitializationSettings();
-    var initializationSettingsIOS = IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    var initializationSettingsIOS = IOSInitializationSettings();
+    // var initializationSettingsIOS = IOSInitializationSettings(
+    //     onDidReceiveLocalNotification: onDidReceiveLocalNotification);
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
@@ -238,6 +239,7 @@ class NotificationsManager {
   }
 
   void showNotification(RemoteMessage message) async {
+    FlutterAppBadger.updateBadgeCount(1);
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         // Platform.isAndroid ? 'com.dabaotogether' : 'com.duytq.flutterchatdemo',
         'com.dabaotogether',
