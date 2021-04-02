@@ -87,7 +87,7 @@ class NotificationsManager {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
-
+      FlutterAppBadger.removeBadge();
       if (_auth.currentUser != null) {
         _navigateToChatScreen(message);
       } else {
@@ -239,7 +239,7 @@ class NotificationsManager {
   }
 
   void showNotification(RemoteMessage message) async {
-    FlutterAppBadger.updateBadgeCount(1);
+    // FlutterAppBadger.updateBadgeCount(1);
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         // Platform.isAndroid ? 'com.dabaotogether' : 'com.duytq.flutterchatdemo',
         'com.dabaotogether',
@@ -272,6 +272,7 @@ class NotificationsManager {
   }
 
   void removeAllNotificationsFromTray() async {
+    FlutterAppBadger.removeBadge();
     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
