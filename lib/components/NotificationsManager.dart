@@ -239,7 +239,7 @@ class NotificationsManager {
   }
 
   void showNotification(RemoteMessage message) async {
-    // FlutterAppBadger.updateBadgeCount(1);
+    FlutterAppBadger.updateBadgeCount(1);
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         // Platform.isAndroid ? 'com.dabaotogether' : 'com.duytq.flutterchatdemo',
         'com.dabaotogether',

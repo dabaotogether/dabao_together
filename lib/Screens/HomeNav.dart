@@ -5,6 +5,7 @@ import 'package:dabao_together/Screens/My_Requests.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_badger/flutter_app_badger.dart';
 
 // final _firestore = Firestore.instance;
 User loggedInUser;
@@ -27,6 +28,9 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
   int _selectedIndex = 0;
   bool _isFirstLoad = true;
   void _onItemTapped(int index) {
+    if (index == 2) {
+      FlutterAppBadger.removeBadge();
+    }
     setState(() {
       _selectedIndex = index;
     });
