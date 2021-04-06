@@ -457,6 +457,8 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
                               //     index++;
                               //   }
                               // }
+                              FocusScope.of(context)
+                                  .requestFocus(new FocusNode());
                               return Container(
                                 margin: EdgeInsets.all(5.0),
                                 decoration: BoxDecoration(

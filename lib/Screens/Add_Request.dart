@@ -368,8 +368,8 @@ class _AddRequestState extends State<AddRequest> {
                           elevation: 10,
                           pressElevation: 5,
                           // shadowColor: Colors.teal,
-                          backgroundColor: Colors.black38,
-                          selectedColor: Colors.black54,
+                          backgroundColor: Colors.black26,
+                          selectedColor: Colors.black87,
                           selected: deliveryFeeChoiceChipValue == 1,
                           onSelected: (bool selected) {
                             setState(() {
@@ -388,8 +388,8 @@ class _AddRequestState extends State<AddRequest> {
                           elevation: 10,
                           pressElevation: 5,
                           // shadowColor: Colors.teal,
-                          backgroundColor: Colors.black38,
-                          selectedColor: Colors.black54,
+                          backgroundColor: Colors.black26,
+                          selectedColor: Colors.black87,
                           selected: deliveryFeeChoiceChipValue == 2,
                           onSelected: (bool selected) {
                             setState(() {
@@ -444,8 +444,8 @@ class _AddRequestState extends State<AddRequest> {
                               elevation: 10,
                               pressElevation: 5,
                               // shadowColor: Colors.teal,
-                              backgroundColor: Colors.black38,
-                              selectedColor: Colors.black54,
+                              backgroundColor: Colors.black26,
+                              selectedColor: Colors.black87,
                               selected: platformChoiceChipValue == 1,
                               onSelected: (bool selected) {
                                 setState(() {
@@ -464,8 +464,8 @@ class _AddRequestState extends State<AddRequest> {
                               elevation: 10,
                               pressElevation: 5,
                               // shadowColor: Colors.teal,
-                              backgroundColor: Colors.black38,
-                              selectedColor: Colors.black54,
+                              backgroundColor: Colors.black26,
+                              selectedColor: Colors.black87,
                               selected: platformChoiceChipValue == 2,
                               onSelected: (bool selected) {
                                 setState(() {
@@ -484,8 +484,8 @@ class _AddRequestState extends State<AddRequest> {
                               elevation: 10,
                               pressElevation: 5,
                               // shadowColor: Colors.teal,
-                              backgroundColor: Colors.black38,
-                              selectedColor: Colors.black54,
+                              backgroundColor: Colors.black26,
+                              selectedColor: Colors.black87,
                               selected: platformChoiceChipValue == 3,
                               onSelected: (bool selected) {
                                 setState(() {
@@ -509,8 +509,8 @@ class _AddRequestState extends State<AddRequest> {
                               elevation: 10,
                               pressElevation: 5,
                               // shadowColor: Colors.teal,
-                              backgroundColor: Colors.black38,
-                              selectedColor: Colors.black54,
+                              backgroundColor: Colors.black26,
+                              selectedColor: Colors.black87,
                               selected: platformChoiceChipValue == 4,
                               onSelected: (bool selected) {
                                 setState(() {
@@ -529,8 +529,8 @@ class _AddRequestState extends State<AddRequest> {
                               elevation: 10,
                               pressElevation: 5,
                               // shadowColor: Colors.teal,
-                              backgroundColor: Colors.black38,
-                              selectedColor: Colors.black54,
+                              backgroundColor: Colors.black26,
+                              selectedColor: Colors.black87,
                               selected: platformChoiceChipValue == 5,
                               onSelected: (bool selected) {
                                 setState(() {
