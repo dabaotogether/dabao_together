@@ -40,7 +40,7 @@ class TncScreen extends StatelessWidget {
                   textAlign: TextAlign.justify,
                   text: TextSpan(
                     text:
-                        'By downloading, browsing, accessing or using this Dabao Together Mobile Application, you agree to be bound by these Terms and Conditions of Use. We reserve the right to amend these terms and conditions at any time. If you disagree with any of these Terms and Conditions of Use, you must immediately discontinue your access to the Dabao Together Mobile Application and your use of the services offered on the Dabao Together Mobile Application. Continued use of the Dabao Together Mobile Application will constitute acceptance of these Terms and Conditions of Use, as may be amended from time to time. ',
+                        'By downloading, browsing, accessing or using this Dabao Together Mobile Application, you agree to be bound by these Terms and Conditions of Use. We reserve the right to amend these terms and conditions at any time. If you disagree with any of these Terms and Conditions of Use, you must immediately discontinue your access to the Dabao Together Mobile Application and your use of the services offered on the Dabao Together Mobile Application. Continued usage of the Dabao Together Mobile Application will constitute acceptance of these Terms and Conditions of Use, as may be amended from time to time. ',
                     style: TextStyle(
                       fontSize: 14,
                       color: Colors.black,
@@ -67,13 +67,13 @@ class TncScreen extends StatelessWidget {
                 '• The developer is committed to ensuring that the app is as useful and efficient as possible. For that reason, we reserve the right to make changes to the app or to charge for its services, at any time and for any reason. We will never charge you for the app or its services without making it very clear to you exactly what you’re paying for. ',
               ),
               buildText(
-                '• The Dabao Together Mobile Application stores and processes personal data that you have provided to us, in order to provide my Service. It’s your responsibility to keep your phone and access to the app secure. We therefore recommend that you do not jailbreak or root your phone, which is the process of removing software restrictions and limitations imposed by the official operating system of your device. It could make your phone vulnerable to malware/viruses/malicious programs, compromise your phone’s security features and it could mean that the Dabao Together Mobile Application won’t work properly or at all. ',
+                '• The Dabao Together Mobile Application stores and processes personal data that you have provided to us, in order to provide our Service. It’s your responsibility to keep your phone and access to the app secure. We therefore recommend that you do not jailbreak or root your phone, which is the process of removing software restrictions and limitations imposed by the official operating system of your device. It could make your phone vulnerable to malware/viruses/malicious programs, compromise your phone’s security features and it could mean that the Dabao Together Mobile Application won’t work properly or at all. ',
               ),
               buildText(
                 '• The developer cannot always take responsibility for the way you use the app i.e. You need to make sure that your device stays charged – if it runs out of battery and you can’t turn it on to avail the Service, the developer cannot accept responsibility. ',
               ),
               buildText(
-                '• At some point, we may wish to update the app. The app is available for both Android & iOS– the requirements for system (and for any additional systems we decide to extend the availability of the app to) may change, and you’ll need to download the updates if you want to keep using the app. The developer does not promise that it will always update the app so that it is relevant to you and/or works with the Android/iOS version that you have installed on your device. However, you promise to always accept updates to the application when offered to you, we may also wish to stop providing the app, and may terminate use of it at any time without giving notice of termination to you.  ',
+                '• At some point, we may wish to update the app. The app is available for both Android & iOS – the requirements for system (and for any additional systems we decide to extend the availability of the app to) may change, and you’ll need to download the updates if you want to keep using the app. The developer does not promise that it will always update the app so that it is relevant to you and/or works with the Android/iOS version that you have installed on your device. However, you promise to always accept updates to the application when offered to you. We may also wish to stop providing the app, and may terminate use of it at any time without giving notice of termination to you.  ',
               ),
               buildText(
                 '• We strongly recommend that you only download the Dabao Together Mobile Application from Google Play Store and App Store. Doing so will ensure that your apps are legitimate and safe from malicious software.',
@@ -145,14 +145,12 @@ class TncScreen extends StatelessWidget {
               buildText(
                 '• All editorial content, information, photographs, illustrations, artwork and other graphic materials, and names, logos and trade marks on the Dabao Together Mobile Application are protected by copyright laws and/or other laws and/or international treaties, and belong to us and/or our suppliers, as the case may be. These works, logos, graphics, sounds or images may not be copied, reproduced, retransmitted, distributed, disseminated, sold, published, broadcasted or circulated whether in whole or in part, unless expressly permitted by us and/or our suppliers, as the case may be. ',
               ),
-              buildText(
-                '• All editorial content, information, photographs, illustrations, artwork and other graphic materials, and names, logos and trade marks on the Dabao Together Mobile Application are protected by copyright laws and/or other laws and/or international treaties, and belong to us and/or our suppliers, as the case may be. These works, logos, graphics, sounds or images may not be copied, reproduced, retransmitted, distributed, disseminated, sold, published, broadcasted or circulated whether in whole or in part, unless expressly permitted by us and/or our suppliers, as the case may be. ',
-              ),
+
               buildText(
                 '• Nothing contained on the Dabao Together Mobile Application should be construed as granting by implication, estoppel, or otherwise, any license or right to use any trademark displayed on the Dabao Together Mobile Application without our written permission. Misuse of any trademarks or any other content displayed on the Dabao Together Mobile Application is prohibited. ',
               ),
               buildText(
-                '• We will not hesitate to take legal action against any unauthorised usage of our trade marks, name or symbols to preserve and protect its rights in the matter. All rights not expressly granted herein are reserved. Other product and company names mentioned herein may also be the trade marks of their respective owners.  ',
+                '• We will not hesitate to take legal action against any unauthorised usage of our trademarks, name or symbols to preserve and protect its rights in the matter. All rights not expressly granted herein are reserved. Other product and company names mentioned herein may also be the trademarks of their respective owners.  ',
               ),
               SizedBox(height: 10),
               Container(
@@ -189,7 +187,7 @@ class TncScreen extends StatelessWidget {
                 ),
               ),
               buildText(
-                '• I may update our Terms and Conditions from time to time. I will notify you of any changes by posting the new Terms and Conditions on this page. These changes are effective immediately after they are posted on this page.    ',
+                '• We may update our Terms and Conditions from time to time. We will notify you of any changes by posting the new Terms and Conditions on this page. These changes are effective immediately after they are posted on this page.    ',
               ),
               SizedBox(height: 10),
               Container(
@@ -251,7 +249,7 @@ class TncScreen extends StatelessWidget {
                 ),
               ),
               buildText(
-                '• The developer provides the Dabao Together Mobile Application, which is a platform to link up people staying near each other to place order together to share the delivery fees. There is in-app messaging for the users to discuss or negotiate the splitting of fees but the purchase will take place outside of the app. They can choose to exchange numbers if they want to.',
+                '• The developer provides the Dabao Together Mobile Application, which is a platform to link up people staying near each other to place order for food or other products together to share the delivery fees or other related fees. There is in-app messaging for the users to discuss or negotiate the splitting of fees but the ordering will take place outside of the app. They can choose to exchange contact information if they want to.',
               ),
               buildText(
                 '• The developer ("The developer", "we", "us") recognizes and understands the importance of the privacy of its users ("users", "you") and wants to respect their desire to store and access personal information in a private and secure manner. This Privacy Policy applies to our Application and describes how the developer manages, stores and utilizes your Personal Data through its Products. ',
@@ -286,9 +284,7 @@ class TncScreen extends StatelessWidget {
               buildText(
                 '• READ/WRITE STORAGE: For accessing device storage media files ',
               ),
-              buildText(
-                '• GPS LOCATION: For fetching live location ',
-              ),
+
               buildText(
                 'Link to privacy policy of third-party service providers used by the app ',
               ),
@@ -304,6 +300,9 @@ class TncScreen extends StatelessWidget {
               ),
               buildText(
                 '• Firebase Cloud Firestore   ',
+              ),
+              buildText(
+                '• Firebase Cloud Functions ',
               ),
               buildText(
                 '• Firebase Cloud Messaging (Push Notification) ',
@@ -378,7 +377,7 @@ class TncScreen extends StatelessWidget {
                 ),
               ),
               buildText(
-                'I want to inform you that whenever you use my Service, in a case of an error in the app I collect data and information (through third party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing my Service, the time and date of your use of the Service, and other statistics.  ',
+                'We want to inform you that whenever you use our Service, in a case of an error in the app, we collect data and information (through third party products) on your phone called Log Data. This Log Data may include information such as your device Internet Protocol (“IP”) address, device name, operating system version, the configuration of the app when utilizing our Service, the time and date of your use of the Service, and other statistics.  ',
               ),
               SizedBox(height: 10),
               Container(
@@ -417,7 +416,7 @@ class TncScreen extends StatelessWidget {
                 ),
               ),
               buildText(
-                'The developer is using a secured backend name Firebase Cloud Firestore by Google. In backend, all the user provided content will be stored. All Data will remain safe and secure. No any single information/data will be sent to the anywhere. ',
+                'The developer is using a secured backend name Firebase Cloud Firestore by Google. In backend, all the user provided content will be stored. All Data will remain safe and secure. No any single information/data will be sent to anywhere else. ',
               ),
               SizedBox(height: 10),
               Container(
@@ -472,24 +471,7 @@ class TncScreen extends StatelessWidget {
                 'We want to inform users of this Service that these third parties have access to your Personal Information. The reason is to perform the tasks assigned to them on our behalf. However, they are obligated not to disclose or use the information for any other purpose. ',
               ),
               SizedBox(height: 10),
-              Container(
-                padding: EdgeInsets.all(5),
-                child: RichText(
-                  textAlign: TextAlign.justify,
-                  text: TextSpan(
-                    text: 'Children\'s Privacy',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
-              buildText(
-                'These Services do not address anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13. In the case We discover that a child under 13 has provided me with personal information, we immediately delete this from our servers. If you are a parent or guardian and you are aware that your child has provided us with personal information, please contact me so that We will be able to do necessary actions. ',
-              ),
-              SizedBox(height: 10),
+
               Container(
                 padding: EdgeInsets.all(5),
                 child: RichText(
@@ -539,7 +521,7 @@ class TncScreen extends StatelessWidget {
       padding: EdgeInsets.all(5),
       child: RichText(
         // overflow: TextOverflow.ellipsis,
-        maxLines: 8,
+        // maxLines: 8,
         textAlign: TextAlign.justify,
         text: TextSpan(
           text: text,
