@@ -199,7 +199,7 @@ class _PinCodeVerificationScreenState extends State<PinCodeVerificationScreen> {
                     style: TextStyle(color: Colors.black54, fontSize: 15),
                     children: [
                       TextSpan(
-                          text: " RESEND",
+                          text: "RESEND",
                           recognizer: onTapRecognizer,
                           style: TextStyle(
                               color: Colors.black87,

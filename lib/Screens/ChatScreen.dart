@@ -339,7 +339,7 @@ class ChatScreenState extends State<ChatScreen> {
             children: [
               Container(
                 child: Text(
-                  DateFormat('dd MMM kk:mm').format(
+                  DateFormat('dd MMM hh:mm a').format(
                       DateTime.fromMillisecondsSinceEpoch(
                           int.parse(document.data()['timestamp']))),
                   style: TextStyle(
@@ -444,7 +444,7 @@ class ChatScreenState extends State<ChatScreen> {
             isLastMessageLeft(index)
                 ? Container(
                     child: Text(
-                      DateFormat('dd MMM kk:mm').format(
+                      DateFormat('dd MMM hh:mm a').format(
                           DateTime.fromMillisecondsSinceEpoch(
                               int.parse(document.data()['timestamp']))),
                       style: TextStyle(
@@ -456,7 +456,7 @@ class ChatScreenState extends State<ChatScreen> {
                   )
                 : Container(
                     child: Text(
-                      DateFormat('dd MMM kk:mm').format(
+                      DateFormat('dd MMM hh:mm a').format(
                           DateTime.fromMillisecondsSinceEpoch(
                               int.parse(document.data()['timestamp']))),
                       style: TextStyle(

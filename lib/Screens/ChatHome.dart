@@ -60,6 +60,7 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
           .doc(currentUserId)
           .collection('active_chat')
           .where('deleted', isEqualTo: 0)
+          .where('blocked', isEqualTo: 0)
           .limit(15)
           .orderBy('created_time', descending: true)
           // .limit(2)
@@ -134,6 +135,7 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
                       .doc(currentUserId)
                       .collection('active_chat')
                       .where('deleted', isEqualTo: 0)
+                      .where('blocked', isEqualTo: 0)
                       .limit(15)
                       .orderBy('created_time', descending: true)
                       // .limit(2)
@@ -240,47 +242,47 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
                 margin: EdgeInsets.only(left: 20.0),
               ),
             ),
-
-            // TODO: Delete chat function put on hold as unable to revert back if the peer reply
-            // Padding(
-            //   padding: const EdgeInsets.only(top: 5.0),
-            //   child: Material(
-            //     elevation: 5.0,
-            //     color: Colors.white,
-            //     borderRadius: BorderRadius.circular(20.0),
-            //     child: MaterialButton(
-            //       onPressed: () {
-            //         firestoreInstance
-            //             .collection('users')
-            //             .doc(currentUserId)
-            //             .collection('active_chat')
-            //             .doc(peerId)
-            //             .update({
-            //           'deleted': 1,
-            //         }).then((_) {
-            //           Flushbar(
-            //             title: "Hey " + _auth.currentUser.displayName,
-            //             message: "The chat history with " +
-            //                 peerName +
-            //                 " has been deleted!",
-            //             duration: Duration(seconds: 3),
-            //           )..show(context);
-            //           print('update request to firestore done!');
-            //         });
-            //       },
-            //       // minWidth: 80.0,
-            //       height: 25.0,
-            //       child: Text(
-            //         'Delete',
-            //         style: TextStyle(
-            //           color: Colors.black,
-            //           fontWeight: FontWeight.bold,
-            //           fontSize: 16,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
-            // )
+            Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Material(
+                elevation: 5.0,
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+                child: MaterialButton(
+                  onPressed: () {
+                    firestoreInstance
+                        .collection('users')
+                        .doc(currentUserId)
+                        .collection('active_chat')
+                        .doc(peerId)
+                        .update({
+                      'blocked': 1,
+                    }).then((_) {
+                      Flushbar(
+                        title: "Hey " + _auth.currentUser.displayName,
+                        message: "You have blocked " +
+                            peerName +
+                            " and the message history has been removed. To unblock " +
+                            peerName +
+                            " and restore the messages, please access the Blocked Users setting in the side menu.",
+                        duration: Duration(seconds: 4),
+                      )..show(context);
+                      print('update request to firestore done!');
+                    });
+                  },
+                  // minWidth: 80.0,
+                  height: 25.0,
+                  child: Text(
+                    'Block',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
         onPressed: () {

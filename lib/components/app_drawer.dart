@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dabao_together/Screens/Blocked_Users_List.dart';
 import 'package:dabao_together/Screens/Contact_Us.dart';
 import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/Screens/My_Past_Requests.dart';
@@ -209,6 +210,22 @@ class _AppDrawerState extends State<AppDrawer> {
 
                           Navigator.pushNamedAndRemoveUntil(
                               context, ContactUsScreen.id, (_) => false);
+                        },
+                      ),
+                      ListTile(
+                        selected: widget.selectedIndex == 5,
+                        selectedTileColor: Colors.grey[800],
+                        leading: Icon(
+                          Icons.block_rounded,
+                          color: Colors.white,
+                        ),
+                        title: Text(
+                          'Blocked Users',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        onTap: () {
+                          Navigator.pushNamedAndRemoveUntil(context,
+                              Blocked_Users_List_Screen.id, (_) => false);
                         },
                       ),
                       ListTile(

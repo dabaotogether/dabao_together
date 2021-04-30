@@ -132,6 +132,7 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
       'vendor': vendor,
       'created_time': FieldValue.serverTimestamp(),
       'deleted': 0,
+      'blocked': 0,
     });
     firestoreInstance
         .collection('users')
@@ -143,6 +144,7 @@ class _MainActivityContainerState extends State<MainActivityContainer> {
       'vendor': vendor,
       'created_time': FieldValue.serverTimestamp(),
       'deleted': 0,
+      'blocked': 0,
     });
   }
 

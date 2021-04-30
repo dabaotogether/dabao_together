@@ -1,9 +1,12 @@
 import 'dart:convert' as convert;
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dabao_together/Screens/HomeNav.dart';
 import 'package:dabao_together/components/rounded_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:http/http.dart' as http;
@@ -615,57 +618,188 @@ class _EditRequestState extends State<EditRequest> {
                         colour: Colors.black87,
                         onPressed: () {
                           if (_editRequestFormKey.currentState.validate()) {
-                            _editRequestFormKey.currentState.save();
+                            if (Platform.isIOS) {
+                              showCupertinoDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CupertinoAlertDialog(
+                                      title: Text('Hi there'),
+                                      content: Text(
+                                          'By submitting the request, other users might be able to view your location/address indicated in your request. Do you still want to proceed to submit the request?'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            _editRequestFormKey.currentState
+                                                .save();
 
-                            selectedDateTime = new DateTime(
-                              selectedDate.year,
-                              selectedDate.month,
-                              selectedDate.day,
-                              selectedTime.hour,
-                              selectedTime.minute,
-                            );
-                            Geoflutterfire geo = Geoflutterfire();
-                            GeoFirePoint location = geo.point(
-                                latitude: double.parse(geoy),
-                                longitude: double.parse(geox));
+                                            selectedDateTime = new DateTime(
+                                              selectedDate.year,
+                                              selectedDate.month,
+                                              selectedDate.day,
+                                              selectedTime.hour,
+                                              selectedTime.minute,
+                                            );
+                                            Geoflutterfire geo =
+                                                Geoflutterfire();
+                                            GeoFirePoint location = geo.point(
+                                                latitude: double.parse(geoy),
+                                                longitude: double.parse(geox));
 
-                            try {
-                              firestoreInstance
-                                  .collection("requests")
-                                  .doc(requestDoc.id)
-                                  .update({
-                                "username": _auth.currentUser.displayName,
-                                "user_id": _auth.currentUser.uid,
-                                "date_time": selectedDateTime,
-                                "vendor": shopName,
-                                "type_of_food": foodTypeList,
-                                "postal_code": postalCode,
-                                "address": address,
-                                "geo_x": geox,
-                                "geo_y": geoy,
-                                "geo_point": location.data,
-                                "fees": deliveryFeeEditChoiceChipValue,
-                                "platform": platformEditChoiceChipValue,
-                                "created_time": FieldValue.serverTimestamp(),
-                                "expired": 0,
-                                "remarks": remarks,
-                              }).then((_) {
-                                Flushbar(
-                                  title: "Hey " + _auth.currentUser.displayName,
-                                  message: "Your jio has been updated!",
-                                  duration: Duration(seconds: 3),
-                                )..show(context);
-                                print('update request to firestore done!');
-                              });
-                              Navigator.pop(context);
-                            } catch (e) {
-                              print(e);
-                              Flushbar(
-                                title: "Hey",
-                                message:
-                                    "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
-                                duration: Duration(seconds: 3),
-                              )..show(context);
+                                            try {
+                                              firestoreInstance
+                                                  .collection("requests")
+                                                  .doc(requestDoc.id)
+                                                  .update({
+                                                "username": _auth
+                                                    .currentUser.displayName,
+                                                "user_id":
+                                                    _auth.currentUser.uid,
+                                                "date_time": selectedDateTime,
+                                                "vendor": shopName,
+                                                "type_of_food": foodTypeList,
+                                                "postal_code": postalCode,
+                                                "address": address,
+                                                "geo_x": geox,
+                                                "geo_y": geoy,
+                                                "geo_point": location.data,
+                                                "fees":
+                                                    deliveryFeeEditChoiceChipValue,
+                                                "platform":
+                                                    platformEditChoiceChipValue,
+                                                "created_time": FieldValue
+                                                    .serverTimestamp(),
+                                                "expired": 0,
+                                                "remarks": remarks,
+                                              }).then((_) {
+                                                Flushbar(
+                                                  title: "Hey " +
+                                                      _auth.currentUser
+                                                          .displayName,
+                                                  message:
+                                                      "Your jio has been updated!",
+                                                  duration:
+                                                      Duration(seconds: 3),
+                                                )..show(context);
+                                                print(
+                                                    'update request to firestore done!');
+                                              });
+                                              Navigator.pushNamedAndRemoveUntil(
+                                                context,
+                                                HomeNavScreen.id,
+                                                (_) => false,
+                                              );
+                                            } catch (e) {
+                                              print(e);
+                                              Flushbar(
+                                                title: "Hey",
+                                                message:
+                                                    "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+                                                duration: Duration(seconds: 3),
+                                              )..show(context);
+                                            }
+                                          },
+                                          child: Text('Continue'),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              // set up the buttons
+                              Widget cancelButton = TextButton(
+                                child: Text("Cancel"),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              );
+                              Widget continueButton = TextButton(
+                                child: Text("Continue"),
+                                onPressed: () {
+                                  // print(addressController.value);
+                                  _editRequestFormKey.currentState.save();
+
+                                  selectedDateTime = new DateTime(
+                                    selectedDate.year,
+                                    selectedDate.month,
+                                    selectedDate.day,
+                                    selectedTime.hour,
+                                    selectedTime.minute,
+                                  );
+                                  Geoflutterfire geo = Geoflutterfire();
+                                  GeoFirePoint location = geo.point(
+                                      latitude: double.parse(geoy),
+                                      longitude: double.parse(geox));
+
+                                  try {
+                                    firestoreInstance
+                                        .collection("requests")
+                                        .doc(requestDoc.id)
+                                        .update({
+                                      "username": _auth.currentUser.displayName,
+                                      "user_id": _auth.currentUser.uid,
+                                      "date_time": selectedDateTime,
+                                      "vendor": shopName,
+                                      "type_of_food": foodTypeList,
+                                      "postal_code": postalCode,
+                                      "address": address,
+                                      "geo_x": geox,
+                                      "geo_y": geoy,
+                                      "geo_point": location.data,
+                                      "fees": deliveryFeeEditChoiceChipValue,
+                                      "platform": platformEditChoiceChipValue,
+                                      "created_time":
+                                          FieldValue.serverTimestamp(),
+                                      "expired": 0,
+                                      "remarks": remarks,
+                                    }).then((_) {
+                                      Flushbar(
+                                        title: "Hey " +
+                                            _auth.currentUser.displayName,
+                                        message: "Your jio has been updated!",
+                                        duration: Duration(seconds: 3),
+                                      )..show(context);
+                                      print(
+                                          'update request to firestore done!');
+                                    });
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      HomeNavScreen.id,
+                                      (_) => false,
+                                    );
+                                  } catch (e) {
+                                    print(e);
+                                    Flushbar(
+                                      title: "Hey",
+                                      message:
+                                          "There is a technical glitch, possibly due to internet connectivity. Please restart the app and try again.",
+                                      duration: Duration(seconds: 3),
+                                    )..show(context);
+                                  }
+                                },
+                              );
+
+                              // set up the AlertDialog
+                              AlertDialog alert = AlertDialog(
+                                title: Text("Hi there"),
+                                content: Text(
+                                    "By submitting the request, other users might be able to view your location/address indicated in your request. Do you still want to proceed to submit the request?"),
+                                actions: [
+                                  cancelButton,
+                                  continueButton,
+                                ],
+                              );
+
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alert;
+                                },
+                              );
                             }
                           }
                         },

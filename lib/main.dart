@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'Screens/Blocked_Users_List.dart';
 import 'Screens/ChatScreen.dart';
 import 'Screens/Contact_Us.dart';
 import 'Screens/Edit_Request.dart';
@@ -119,6 +120,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           ContactUsScreen.id: (context) => ContactUsScreen(),
           IntroScreen.id: (context) => IntroScreen(),
           WhoAreWeScreen.id: (context) => WhoAreWeScreen(),
+          Blocked_Users_List_Screen.id: (context) =>
+              Blocked_Users_List_Screen(),
           // Chat.id: (context) => Chat(),
         });
   }
