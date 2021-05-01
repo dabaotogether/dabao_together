@@ -757,17 +757,18 @@ class _EditRequestState extends State<EditRequest> {
                                       "expired": 0,
                                       "remarks": remarks,
                                     }).then((_) {
+                                      Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        HomeNavScreen.id,
+                                        (_) => false,
+                                      );
                                       Flushbar(
                                         title: "Hey " +
                                             _auth.currentUser.displayName,
                                         message: "Your jio has been updated!",
                                         duration: Duration(seconds: 3),
                                       )..show(context);
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        HomeNavScreen.id,
-                                        (_) => false,
-                                      );
+
                                       print(
                                           'update request to firestore done!');
                                     });

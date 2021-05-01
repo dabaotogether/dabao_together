@@ -658,6 +658,12 @@ class _AddRequestState extends State<AddRequest> {
                                                 "expired": 0,
                                                 "remarks": remarks,
                                               }).then((_) {
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                  context,
+                                                  HomeNavScreen.id,
+                                                  (_) => false,
+                                                );
                                                 Flushbar(
                                                   title: "Hey " +
                                                       _auth.currentUser
@@ -667,12 +673,7 @@ class _AddRequestState extends State<AddRequest> {
                                                   duration:
                                                       Duration(seconds: 3),
                                                 )..show(context);
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                  context,
-                                                  HomeNavScreen.id,
-                                                  (_) => false,
-                                                );
+
                                                 print(
                                                     'saving to firestore done!');
                                               });
