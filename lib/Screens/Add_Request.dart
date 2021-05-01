@@ -667,14 +667,15 @@ class _AddRequestState extends State<AddRequest> {
                                                   duration:
                                                       Duration(seconds: 3),
                                                 )..show(context);
+                                                Navigator
+                                                    .pushNamedAndRemoveUntil(
+                                                  context,
+                                                  HomeNavScreen.id,
+                                                  (_) => false,
+                                                );
                                                 print(
                                                     'saving to firestore done!');
                                               });
-                                              Navigator.pushNamedAndRemoveUntil(
-                                                context,
-                                                HomeNavScreen.id,
-                                                (_) => false,
-                                              );
                                             } catch (e) {
                                               print(e);
                                               Flushbar(

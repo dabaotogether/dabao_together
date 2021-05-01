@@ -763,14 +763,14 @@ class _EditRequestState extends State<EditRequest> {
                                         message: "Your jio has been updated!",
                                         duration: Duration(seconds: 3),
                                       )..show(context);
+                                      Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        HomeNavScreen.id,
+                                        (_) => false,
+                                      );
                                       print(
                                           'update request to firestore done!');
                                     });
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      HomeNavScreen.id,
-                                      (_) => false,
-                                    );
                                   } catch (e) {
                                     print(e);
                                     Flushbar(
